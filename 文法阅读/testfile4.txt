@@ -1,0 +1,50 @@
+int param1 = 100;
+
+int bgt(int a, int b) {
+    if (a > b) return 1;
+    else return 0;
+    return 0 ;
+}
+
+void tips() {
+    return;
+}
+int main() {
+    printf("19231165");
+    printf("\nstart\n");
+    const int constDecl1 = 2;
+    const int constDecl2[3]={1,2,3},constDecl3[3][3]={{1,2,3},{4,5,6},{7,8,9}};
+    int i = 0;
+    int varDecl1,varDecl3;
+    int varDecl2[5] = {6, 8, 0, 10, 12};
+    printf("%d\n", varDecl2[0]);
+    varDecl1 = getint();
+    varDecl3 = getint();
+
+    if(varDecl1 > 0){
+        int tmp = 0;
+    }
+    if(varDecl1>constDecl1) {  }
+    if(varDecl1 || varDecl3){
+        varDecl1 = 10;
+        while(i<5) {
+            i=i+1;
+            if(varDecl2[i] == 0) { continue; }
+            if(varDecl2[i] > 10) { break; }
+        }
+    }else{
+        tips();
+        printf("no FuncFParam\n");
+    }
+    printf("%d\n", varDecl1);
+    printf("%d\n", varDecl3);
+    printf("No9\n");
+    if(varDecl2[0]>0){
+        printf("No10\n");
+        printf("value is %d\n", varDecl2[0]);
+    }
+    printf("end");
+    return 0;
+}
+
+

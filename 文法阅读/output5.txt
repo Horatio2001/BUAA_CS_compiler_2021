@@ -1,0 +1,7 @@
+19231165
+start
+a is zero3
+0
+2
+a ble b
+a nbeq b

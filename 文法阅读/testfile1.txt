@@ -1,0 +1,24 @@
+int main(){
+    printf("19231165");
+    printf("\n");
+    int n,m;
+    n = getint();
+    m = getint();
+    n = 10 - m;
+    m = 10 + m;
+    printf("check the number\n");
+    if(0 && m) { ; }
+    if(1 || m) { ; }
+    if(n && m){
+        printf("n m not zero\n");
+        printf("%d\n", n);
+        printf("%d\n", m);
+    }
+    if(n || m){
+        printf("maybe n m bgtz both.\n");
+        printf("%d\n", n);
+        printf("%d\n", m);
+    }
+    printf("thats end.\n");
+    return 0;
+}

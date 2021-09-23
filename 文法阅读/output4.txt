@@ -1,0 +1,9 @@
+19231165
+start
+6
+10
+9
+No9
+No10
+value is 6
+end

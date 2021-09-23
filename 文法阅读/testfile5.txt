@@ -1,0 +1,43 @@
+int bgtz(int a){
+    if(a>0) return 1;
+    else return 0;
+    return 0;
+}
+int bgt(int a, int b){
+    if(b<a) return 1;
+    else return 0;
+    return 0;
+}
+int main(){
+    printf("19231165");
+    printf("\nstart\n");
+    int a = 0;
+    int b = 1;
+    int c = 2;
+    int d = 3;
+    int e = 4;
+    if(!a){
+        printf("a is zero");
+    }
+    a = 3;
+    b = bgtz(a);
+    c = b;
+    d = (a + b);
+    b = -c;
+    c = +a;
+    d = bgt(a, d);
+    printf("%d\n",a);
+    a = a + b;
+    b = a - b;
+    c = a * b;
+    d = a / b;
+    e = a % b;
+    printf("%d\n", d);
+    printf("%d\n", e);
+    if(a >= b){ printf("a bge b\n"); }
+    if(a <= b){ printf("a ble b\n"); }
+    if(a == b){ printf("a beq b\n"); }
+    if(a != b){ printf("a nbeq b\n"); }
+    return 0;
+}
+

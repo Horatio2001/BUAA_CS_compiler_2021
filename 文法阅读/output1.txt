@@ -1,0 +1,9 @@
+19231165
+check the number
+n m not zero
+8
+12
+maybe n m bgtz both.
+8
+12
+thats end.
