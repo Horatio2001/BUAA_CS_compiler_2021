@@ -1,9 +1,6 @@
 package Grammer;
 import Lexical.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class GrammerAnalyzer {
@@ -19,29 +16,10 @@ public class GrammerAnalyzer {
         return new ArrayList<>(CompUnit());
     }
 
-    public void eofile(boolean flag, String outFileName) throws IOException {
-        if (flag) {
-            ArrayList<String> res = grammerAnalyze();
-            StringBuilder buf = new StringBuilder();
-            for (int i = 0; i < res.size(); i++) {
-                if (i != res.size() - 1) {
-                    buf.append(res.get(i)).append("\n");
-                } else {
-                    buf.append(res.get(i));
-                }
-            }
-            File file = new File(outFileName);
-            FileWriter fileWritter = new FileWriter(file.getName(), false);
-            fileWritter.write(buf.toString());
-            fileWritter.close();
-        }
-    }
-
-
     //编译单元
+    //CompUnit → {Decl} {FuncDef} MainFuncDef
     public ArrayList<String> CompUnit() {
         ArrayList<String> res = new ArrayList<>();
-        //System.out.println("compunit");
         // 全局变量的声明
         while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("CONSTTK") ||
                 (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK") &&
@@ -67,6 +45,7 @@ public class GrammerAnalyzer {
     }
 
     //声明 Decl不输出
+    //Decl → ConstDecl | VarDecl
     public ArrayList<String> Decl() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("CONSTTK")) {
@@ -81,6 +60,7 @@ public class GrammerAnalyzer {
     }
 
     //常量声明
+    //ConstDecl → 'const' BType ConstDef { ',' ConstDef } ';'
     public ArrayList<String> ConstDecl(){
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("CONSTTK")) {
@@ -115,6 +95,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //常数定义
+    //ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
     public ArrayList<String> ConstDef(){
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
@@ -149,6 +131,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //常量初值
+    //ConstInitVal → ConstExp | '{' [ ConstInitVal { ',' ConstInitVal } ] '}'
     public ArrayList<String> ConstInitVal(){
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
@@ -194,6 +178,7 @@ public class GrammerAnalyzer {
 
 
     //变量声明
+    //VarDecl → BType VarDef { ',' VarDef } ';'
     public ArrayList<String> VarDecl() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
@@ -220,6 +205,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //变量定义
+    //VarDef → Ident { '[' ConstExp ']' } |  Ident { '[' ConstExp ']' } '=' InitVal
     public ArrayList<String> VarDef() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
@@ -250,6 +237,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //变量初值
+    //InitVal → Exp | '{' [ InitVal { ',' InitVal } ] '}'
     public ArrayList<String> InitVal() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")) {
@@ -290,7 +279,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
-    //函数声明
+    //函数定义
+    //FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
     public ArrayList<String> FuncDef() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK") ||
@@ -334,6 +324,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //主函数定义
+    //MainFuncDef → 'int' 'main' '(' ')' Block
     public ArrayList<String> MainFuncDef() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
@@ -348,8 +340,12 @@ public class GrammerAnalyzer {
                     if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RPARENT")) {
                         res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                         index++;
-                        res.addAll(Block());
-                        res.add("<MainFuncDef>");
+                        if(GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")){
+                            res.addAll(Block());
+                            res.add("<MainFuncDef>");
+                        } else{
+                            System.out.println("mainfunc error 0");
+                        }
                     } else {
                         System.out.println("mainfunc error 1");
                     }
@@ -365,6 +361,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //函数类型
+    //FuncType → 'void' | 'int'
     public ArrayList<String> FuncType() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("functype");
@@ -380,6 +378,7 @@ public class GrammerAnalyzer {
     }
 
     //函数形参表
+    //FuncFParams → FuncFParam { ',' FuncFParam }
     public ArrayList<String> FuncFParams() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
@@ -403,6 +402,7 @@ public class GrammerAnalyzer {
     }
 
     //函数形参
+    //FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }]
     public ArrayList<String> FuncFParam() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
@@ -446,7 +446,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
-    //语法块 block不输出
+    //语法块
+    //Block → '{' { BlockItem } '}'
     public ArrayList<String> Block(){
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")) {
@@ -485,6 +486,8 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //语句块项
+    //BlockItem → Decl | Stmt
     public ArrayList<String> BlockItem() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("blockitem");
@@ -519,13 +522,27 @@ public class GrammerAnalyzer {
     }
 
     //语句
+    /*
+    Stmt → LVal '=' Exp ';' // 每种类型的语句都要覆盖
+     | [Exp] ';' //有⽆Exp两种情况
+     | Block
+     | 'if' '( Cond ')' Stmt [ 'else' Stmt ] // 1.有else 2.⽆else
+     | 'while' '(' Cond ')' Stmt
+     | 'break' ';'
+     | 'continue' ';'
+     | 'return' [Exp] ';' // 1.有Exp 2.⽆Exp
+     | LVal = 'getint''('')'';'
+     | 'printf''('FormatString{,Exp}')'';'
+     */
     public ArrayList<String> Stmt() {
         ArrayList<String> res = new ArrayList<>();
         switch (GrammerAnalyzerOutput.get(index).getCategoryCode()) {
+            //| Block
             case "LBRACE":
                 res.addAll(Block());
                 res.add("<Stmt>");
                 break;
+            //| 'if' '( Cond ')' Stmt [ 'else' Stmt ] // 1.有else 2.⽆else
             case "IFTK":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -550,6 +567,7 @@ public class GrammerAnalyzer {
                     System.out.println("----------stmt IFTK error2");
                 }
                 break;
+            //| 'while' '(' Cond ')' Stmt
             case "WHILETK":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -569,7 +587,9 @@ public class GrammerAnalyzer {
                     System.out.println("----------stmt whiletk error2");
                 }
                 break;
+            //| 'break' ';'
             case "BREAKTK":
+            //| 'continue' ';'
             case "CONTINUETK":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -581,6 +601,7 @@ public class GrammerAnalyzer {
                     System.out.println("----------stmt continuetk error1");
                 }
                 break;
+            //| 'return' [Exp] ';' // 1.有Exp 2.⽆Exp
             case "RETURNTK":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -600,6 +621,7 @@ public class GrammerAnalyzer {
                     System.out.println("----------stmt returntk error1");
                 }
                 break;
+            //| 'printf''('FormatString{,Exp}')'';'
             case "PRINTFTK":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -634,11 +656,14 @@ public class GrammerAnalyzer {
                     System.out.println("----------stmt printtk error4");
                 }
                 break;
+            // |;
             case "SEMICN":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
                 res.add("<Stmt>");
                 break;
+            //| LVal '=' Exp ';'
+            //| LVal = 'getint''('')'';'
             case "IDENFR":
                 if (GrammerAnalyzerOutput.get(index + 1).getCategoryCode().equals("LPARENT")) {
                     res.addAll(Exp());
@@ -656,6 +681,7 @@ public class GrammerAnalyzer {
                         res.addAll(t);
                         res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                         index++;
+                        //| LVal = 'getint''('')'';'
                         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("GETINTTK")) {
                             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                             index++;
@@ -671,6 +697,7 @@ public class GrammerAnalyzer {
                             } else {
                                 System.out.println("----------stmt IDENFR error3");
                             }
+                            //| LVal '=' Exp ';'
                         } else {
                             res.addAll(Exp());
                         }
@@ -694,6 +721,7 @@ public class GrammerAnalyzer {
                     }
                 }
                 break;
+            //[Exp] ';'
             case "LPARENT":
             case "INTCON":
             case "NOT":
@@ -716,6 +744,7 @@ public class GrammerAnalyzer {
     }
 
     //表达式
+    //Exp → AddExp
     public ArrayList<String> Exp() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
@@ -734,6 +763,7 @@ public class GrammerAnalyzer {
     }
 
     //条件表达式
+    //Cond → LOrExp
     public ArrayList<String> Cond() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("cond");
@@ -752,6 +782,7 @@ public class GrammerAnalyzer {
     }
 
     //左值表达式
+    //LVal → Ident {'[' Exp ']'}
     public ArrayList<String> LVal() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
@@ -788,6 +819,7 @@ public class GrammerAnalyzer {
     }
 
     //基本表达式
+    //PrimaryExp → '(' Exp ')' | LVal | Number
     public ArrayList<String> PrimaryExp() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("primaryexp");
@@ -820,6 +852,7 @@ public class GrammerAnalyzer {
     }
 
     //数值
+    //Number → IntConst
     public ArrayList<String> Number() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("number");
@@ -832,6 +865,8 @@ public class GrammerAnalyzer {
     }
 
     //一元表达式
+    //UnaryExp → PrimaryExp | Ident '(' [FuncRParams] ')' | UnaryOp UnaryExp
+    //注意先识别调用函数的Ident '(' [FuncRParams] ')'，再识别基本表达式PrimaryExp
     public ArrayList<String> UnaryExp() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
@@ -884,6 +919,7 @@ public class GrammerAnalyzer {
     }
 
     //单目运算符
+    //UnaryOp → '+' | '−' | '!'
     public ArrayList<String> UnaryOp() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("unaryop");
@@ -898,6 +934,7 @@ public class GrammerAnalyzer {
     }
 
     //函数实参表
+    //FuncRParams → Exp { ',' Exp }
     public ArrayList<String> FuncRParams() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
@@ -931,6 +968,8 @@ public class GrammerAnalyzer {
     }
 
     //乘除模表达式
+    //MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp
+    //MulExp → UnaryExp { ('*' | '/' | '%') UnaryExp }
     public ArrayList<String> MulExp(){
         ArrayList<String> res = new ArrayList<>(UnaryExp());
         res.add("<MulExp>");
@@ -946,6 +985,8 @@ public class GrammerAnalyzer {
     }
 
     //加减表达式
+    //AddExp → MulExp | AddExp ('+' | '−') MulExp
+    //AddExp → MulExp { ('+' | '−') MulExp }
     public ArrayList<String> AddExp(){
         ArrayList<String> res = new ArrayList<>(MulExp());
         res.add("<AddExp>");
@@ -960,6 +1001,8 @@ public class GrammerAnalyzer {
     }
 
     //关系表达式
+    //RelExp → AddExp | RelExp ('<' | '>' | '<=' | '>=') AddExp
+    //RelExp → AddExp { ('<' | '>' | '<=' | '>=') AddExp }
     public ArrayList<String> RelExp() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
@@ -987,6 +1030,8 @@ public class GrammerAnalyzer {
     }
 
     //相等性表达式
+    //EqExp → RelExp | EqExp ('==' | '!=') RelExp
+    //EqExp → RelExp { ('==' | '!=') RelExp }
     public ArrayList<String> EqExp() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
@@ -1012,6 +1057,8 @@ public class GrammerAnalyzer {
     }
 
     //逻辑与表达式
+    //LAndExp → EqExp | LAndExp '&&' EqExp
+    //LAndExp → EqExp { '&&' EqExp }
     public ArrayList<String> LAndExp() {
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
@@ -1034,7 +1081,10 @@ public class GrammerAnalyzer {
         }
         return res;
     }
+
     //逻辑或表达式
+    //LOrExp → LAndExp | LOrExp '||' LAndExp
+    //LOrExp → LAndExp { '||' LAndExp }
     public ArrayList<String> LOrExp() {
         ArrayList<String> res = new ArrayList<>();
         //System.out.println("lorexp");
@@ -1059,6 +1109,7 @@ public class GrammerAnalyzer {
     }
 
     //常量表达式
+    //ConstExp → AddExp
     public ArrayList<String> ConstExp(){
         ArrayList<String> res = new ArrayList<>();
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
