@@ -18,7 +18,7 @@ public class Block {
         SymbolTable = new ArrayList<>();
     }
 
-    public void addBlock(Block block){
+    public void addCBlock(Block block){
         this.CBlock.add(block);
     }
 
@@ -82,9 +82,7 @@ public class Block {
         this.SymbolTable = blockItems;
     }
 
-    public void setCBlock(ArrayList<Block> CBlock) {
-        this.CBlock = CBlock;
-    }
+
 
     public void setFBlock(Block FBlock) {
         this.FBlock = FBlock;
@@ -106,7 +104,8 @@ public class Block {
         System.out.println("------------------" + type + "----------------------");
         System.out.println("level: " + level);
         for (Symbol symbol : SymbolTable) {
-            System.out.println(symbol.getName() + "   dim: " + symbol.getDim() + "  type: " + symbol.getType()
+            System.out.println(symbol.getName() + "   dim: " + symbol.getDim() + "   dim1: " + symbol.getDim1()
+                    + "   dim2: " + symbol.getDim2() + "  type: " + symbol.getType()
                     +"  address: " + symbol.getAddress() + "  global: " + symbol.isGlobal());
             if (symbol.isConst()) {
                 symbol.show_value();

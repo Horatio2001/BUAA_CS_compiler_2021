@@ -10,6 +10,7 @@ public class Func_symbol extends Symbol{
 
     public Func_symbol(String name, int dim){
         super(name,dim);
+
     }
 
     public void addParam(Param_symbol param_symbol){

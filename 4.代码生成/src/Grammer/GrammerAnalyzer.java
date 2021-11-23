@@ -1,9 +1,6 @@
 package Grammer;
 import Lexical.*;
-import SymbolTable.Block;
-import SymbolTable.Const_symbol;
-import SymbolTable.Func_symbol;
-import SymbolTable.Symbol;
+import SymbolTable.*;
 
 import java.util.ArrayList;
 
@@ -11,8 +8,10 @@ public class GrammerAnalyzer {
     private ArrayList<LexicalAnalyzerForm> GrammerAnalyzerOutput;
     private int index = 0;
     private int level = 1;
+    private int flag = 0;
     Block curBlock = new Block("global",null,level);
-    Func_symbol cur_func_symbol;
+    Func_symbol cur_func_symbol = null;
+//    Block global = curBlock;
 
     public GrammerAnalyzer(ArrayList<LexicalAnalyzerForm> LexicalAnalyzerOutput) {
         this.GrammerAnalyzerOutput = LexicalAnalyzerOutput;
@@ -28,12 +27,15 @@ public class GrammerAnalyzer {
     public ArrayList<String> CompUnit() {
         ArrayList<String> res = new ArrayList<>();
         // 全局变量的声明
+        flag = 1;
         while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("CONSTTK") ||
                 (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK") &&
                         GrammerAnalyzerOutput.get(index + 1).getCategoryCode().equals("IDENFR") &&
                         !GrammerAnalyzerOutput.get(index + 2).getCategoryCode().equals("LPARENT"))) {
             res.addAll(Decl());
+
         }
+        flag = 0;
         // 函数声明
         while ((GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK") &&
                 GrammerAnalyzerOutput.get(index + 1).getCategoryCode().equals("IDENFR") &&
@@ -147,6 +149,7 @@ public class GrammerAnalyzer {
             }
             const_symbol.setDim1(dim1);
             const_symbol.setDim2(dim2);
+            if (flag==1){const_symbol.setGlobal(true);}
 
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("ASSIGN")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
@@ -304,13 +307,34 @@ public class GrammerAnalyzer {
     //VarDef → Ident { '[' ConstExp ']' } |  Ident { '[' ConstExp ']' } '=' InitVal
     public ArrayList<String> VarDef() {
         ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res,0);
+        int cishu = 0;
+        int dim1 = 0;
+        int dim2 = 0;
+        int value = 0;
+        int midvalue = 0;
+        Var_symbol var_symbol = new Var_symbol("",0);
+        curBlock.addSymbol(var_symbol);
+
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            var_symbol.setName(GrammerAnalyzerOutput.get(index).getValue());
             index++;
             while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
-                res.addAll(ConstExp());
+                cishu++;
+                var_symbol.setDim(var_symbol.getDim() + 1);
+//                res.addAll(ConstExp());
+                Record record1 = ConstExpValue();
+                res.addAll(record1.getRes());
+                midvalue = record1.getRetValue();
+                if(cishu == 1){
+                    dim1 = midvalue;
+                }else if(cishu ==2){
+                    dim2 = dim1;
+                    dim1 = midvalue;
+                }
                 if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACK")) {
                     res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                     index++;
@@ -319,6 +343,9 @@ public class GrammerAnalyzer {
                     System.out.println("vardef error1");
                 }
             }
+            var_symbol.setDim1(dim1);
+            var_symbol.setDim2(dim2);
+            if (flag==1){var_symbol.setGlobal(true);}
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("ASSIGN")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -378,14 +405,32 @@ public class GrammerAnalyzer {
     //FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
     public ArrayList<String> FuncDef() {
         ArrayList<String> res = new ArrayList<>();
+        Func_symbol func_symbol = new Func_symbol("",0);
         String type;
+        String name;
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("VOIDTK")) {
+
             type = GrammerAnalyzerOutput.get(index).getValue();
+            if(type.equals("int")){
+                func_symbol.setDim(0);
+            }else if(type.equals("void")){
+                func_symbol.setDim(-1);
+            }
+
             res.addAll(FuncType());
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                name = GrammerAnalyzerOutput.get(index).getValue();
+                func_symbol.setName(name);
                 index++;
+
+                curBlock.addSymbol(func_symbol);
+                Block block1 = new Block(type, curBlock, curBlock.getLevel()+1);
+                curBlock.addCBlock(block1);
+                curBlock = block1;
+                cur_func_symbol = func_symbol;
+
                 if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT")) {
                     res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                     index++;
@@ -398,6 +443,7 @@ public class GrammerAnalyzer {
                         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")) {
                             res.addAll(Block());
                             res.add("<FuncDef>");
+                            curBlock = curBlock.getFBlock();
                         }
                         else {
                             System.out.println("funcdef error1");
@@ -425,12 +471,27 @@ public class GrammerAnalyzer {
     //MainFuncDef → 'int' 'main' '(' ')' Block
     public ArrayList<String> MainFuncDef() {
         ArrayList<String> res = new ArrayList<>();
+
+        Func_symbol func_symbol = new Func_symbol("",0);
+        String type;
+        String name;
+
+
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             index++;
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MAINTK")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                func_symbol.setName("main");
+
                 index++;
+
+                curBlock.addSymbol(func_symbol);
+                Block block1 = new Block("int", curBlock, curBlock.getLevel()+1);
+                curBlock.addCBlock(block1);
+                curBlock = block1;
+                cur_func_symbol = func_symbol;
+
                 if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT")) {
                     res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                     index++;
@@ -439,6 +500,8 @@ public class GrammerAnalyzer {
                         index++;
                         if(GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")){
                             res.addAll(Block());
+
+                            curBlock = curBlock.getFBlock();
                             res.add("<MainFuncDef>");
                         } else{
                             System.out.println("mainfunc error 0");
@@ -502,22 +565,43 @@ public class GrammerAnalyzer {
     //FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }]
     public ArrayList<String> FuncFParam() {
         ArrayList<String> res = new ArrayList<>();
+        Param_symbol param_symbol = new Param_symbol("",0);
+        String type;
+        String name;
+        int dim1 = 0;
+        int dim2 = 0;
+        int midvalue = 0;
+
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             index++;
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+
+                name = GrammerAnalyzerOutput.get(index).getValue();
+                param_symbol.setName(name);
+
                 index++;
                 if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
                     res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                    param_symbol.setDim(1);
+                    param_symbol.setDim1(0);
                     index++;
                     if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACK")) {
                         res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                         index++;
                         while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
                             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+
+                            param_symbol.setDim(2);
                             index++;
-                            res.addAll(ConstExp());
+//                            res.addAll(ConstExp());
+                            Record record1 = ConstExpValue();
+                            res.addAll(record1.getRes());
+                            midvalue = record1.getRetValue();
+                            param_symbol.setDim2(0);
+                            param_symbol.setDim1(midvalue);
+
                             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACK")) {
                                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                                 index++;
@@ -531,6 +615,8 @@ public class GrammerAnalyzer {
                         System.out.println("funcfparam error2");
                     }
                 }
+                cur_func_symbol.addParam(param_symbol);
+                curBlock.addSymbol(param_symbol);
                 res.add("<FuncFParam>");
             }
             else {
@@ -636,7 +722,14 @@ public class GrammerAnalyzer {
         switch (GrammerAnalyzerOutput.get(index).getCategoryCode()) {
             //| Block
             case "LBRACE":
+                Block block = new Block("block",curBlock,curBlock.getLevel()+1);
+                block.setFBlock(curBlock);
+                curBlock.addCBlock(block);
+                curBlock = block;
+
                 res.addAll(Block());
+
+                curBlock = curBlock.getFBlock();
                 res.add("<Stmt>");
                 break;
             //| 'if' '( Cond ')' Stmt [ 'else' Stmt ] // 1.有else 2.⽆else
