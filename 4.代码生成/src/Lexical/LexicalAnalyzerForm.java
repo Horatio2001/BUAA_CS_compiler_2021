@@ -5,6 +5,10 @@ public class LexicalAnalyzerForm {
     private String CategoryCode;
     private int row;
 
+    public String getValue() {
+        return value;
+    }
+
     public String getCategoryCode() { return CategoryCode; }
 
     public LexicalAnalyzerForm(String value, int kind, int row){

@@ -15,6 +15,7 @@ public class Compiler {
             System.exit(0);
         }
         String content = TurnToFile.readFile(file);
+        //符号表建立
 
         //词法
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(content);

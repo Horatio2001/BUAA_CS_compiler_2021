@@ -1,10 +1,14 @@
 package Grammer;
 import Lexical.*;
+import SymbolTable.Block;
+
 import java.util.ArrayList;
 
 public class GrammerAnalyzer {
     private ArrayList<LexicalAnalyzerForm> GrammerAnalyzerOutput;
     private int index = 0;
+    private int level = 1;
+    Block curBlock = new Block("global",null,level);
 
     public GrammerAnalyzer(ArrayList<LexicalAnalyzerForm> LexicalAnalyzerOutput) {
         this.GrammerAnalyzerOutput = LexicalAnalyzerOutput;
@@ -101,6 +105,7 @@ public class GrammerAnalyzer {
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             index++;
+
             while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
@@ -282,8 +287,10 @@ public class GrammerAnalyzer {
     //FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
     public ArrayList<String> FuncDef() {
         ArrayList<String> res = new ArrayList<>();
+        String type;
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("VOIDTK")) {
+            type = GrammerAnalyzerOutput.get(index).getValue();
             res.addAll(FuncType());
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
