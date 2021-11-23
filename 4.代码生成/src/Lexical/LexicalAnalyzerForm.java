@@ -31,7 +31,7 @@ public class LexicalAnalyzerForm {
     }
 
     public String turnToFileFormat(){
-        return this.CategoryCode + " " + this.value + " " + this.row;
+        return this.CategoryCode + " " + this.value ;
     }
 
     public void LexicalSymbol(String value){

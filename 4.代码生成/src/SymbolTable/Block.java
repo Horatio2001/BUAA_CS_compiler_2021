@@ -106,7 +106,7 @@ public class Block {
         System.out.println("------------------" + type + "----------------------");
         System.out.println("level: " + level);
         for (Symbol symbol : SymbolTable) {
-            System.out.println(symbol.getName() + "   dim: " + symbol.getDim() + "  type: " + symbol.getName()
+            System.out.println(symbol.getName() + "   dim: " + symbol.getDim() + "  type: " + symbol.getType()
                     +"  address: " + symbol.getAddress() + "  global: " + symbol.isGlobal());
             if (symbol.isConst()) {
                 symbol.show_value();

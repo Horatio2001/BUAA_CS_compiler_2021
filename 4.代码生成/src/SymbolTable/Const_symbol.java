@@ -9,6 +9,7 @@ public class Const_symbol extends Symbol{
 
     public Const_symbol(String name, int dim){
         super(name, dim);
+        this.setConst(true);
     }
 
     @Override

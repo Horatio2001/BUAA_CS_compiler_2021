@@ -1,6 +1,9 @@
 package Grammer;
 import Lexical.*;
 import SymbolTable.Block;
+import SymbolTable.Const_symbol;
+import SymbolTable.Func_symbol;
+import SymbolTable.Symbol;
 
 import java.util.ArrayList;
 
@@ -9,6 +12,7 @@ public class GrammerAnalyzer {
     private int index = 0;
     private int level = 1;
     Block curBlock = new Block("global",null,level);
+    Func_symbol cur_func_symbol;
 
     public GrammerAnalyzer(ArrayList<LexicalAnalyzerForm> LexicalAnalyzerOutput) {
         this.GrammerAnalyzerOutput = LexicalAnalyzerOutput;
@@ -44,6 +48,7 @@ public class GrammerAnalyzer {
         } else {
             System.out.println("compunit main func error");
         }
+        curBlock.show();
         return res;
     }
 
@@ -66,6 +71,7 @@ public class GrammerAnalyzer {
     //ConstDecl → 'const' BType ConstDef { ',' ConstDef } ';'
     public ArrayList<String> ConstDecl(){
         ArrayList<String> res = new ArrayList<>();
+        //Const_symbol const_symbol;
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("CONSTTK")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             index++;
@@ -102,14 +108,34 @@ public class GrammerAnalyzer {
     //ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
     public ArrayList<String> ConstDef(){
         ArrayList<String> res = new ArrayList<>();
+        Const_symbol const_symbol = new Const_symbol("",0);
+        curBlock.addSymbol(const_symbol);
+        int dim1 = 0;
+        int dim2 = 0;
+        int dim = 0;
+        int midvalue = 0;
+        int value = 0;
+        int cishu = 0;
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            const_symbol.setName(GrammerAnalyzerOutput.get(index).getValue());
             index++;
 
             while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                const_symbol.setDim(const_symbol.getDim() + 1);
                 index++;
-                res.addAll(ConstExp());
+                cishu++;
+//                res.addAll(ConstExp());
+                Record record1 = ConstExpValue();
+                res.addAll(record1.getRes());
+                midvalue = record1.getRetValue();
+                if(cishu == 1){
+                    dim1 = midvalue;
+                }else if(cishu == 2){
+                    dim2 = dim1;
+                    dim1 = midvalue;
+                }
                 if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACK")) {
                     res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                     index++;
@@ -119,10 +145,16 @@ public class GrammerAnalyzer {
                     System.out.println("constdef error1");
                 }
             }
+            const_symbol.setDim1(dim1);
+            const_symbol.setDim2(dim2);
+
             if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("ASSIGN")) {
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
                 index++;
-                res.addAll(ConstInitVal());
+//                res.addAll(ConstInitVal());
+                RecordValue recordValue = ConstInitValValue();
+                res.addAll(recordValue.getRes());
+                const_symbol.setValues(recordValue.getValues());
                 res.add("<ConstDef>");
             }
             else {
@@ -178,6 +210,65 @@ public class GrammerAnalyzer {
             System.out.println("constinitval error2");
         }
         return res;
+    }
+    //常量初值
+    //ConstInitVal → ConstExp | '{' [ ConstInitVal { ',' ConstInitVal } ] '}'
+    public RecordValue ConstInitValValue(){
+        ArrayList<String> res = new ArrayList<>();
+        ArrayList<Integer> values = new ArrayList<>();
+        RecordValue recordValue = new RecordValue(res, values);
+
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//            res.addAll(ConstExp());
+            Record record = ConstExpValue();
+            res.addAll(record.getRes());
+            values.add(record.getRetValue());
+            res.add("<ConstInitVal>");
+        }
+        else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            index++;
+            if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                    GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                    GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                    GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                    GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                    GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU") ||
+                    GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")) {
+//                res.addAll(ConstInitVal());
+                RecordValue recordValue1 = ConstInitValValue();
+                res.addAll(recordValue1.getRes());
+                values.addAll(recordValue1.getValues());
+
+                while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("COMMA")) {
+                    res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                    index++;
+//                    res.addAll(ConstInitVal());
+                    RecordValue recordValue2 = ConstInitValValue();
+                    res.addAll(recordValue2.getRes());
+                    values.addAll(recordValue2.getValues());
+                }
+            }
+            if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACE")) {
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+                res.add("<ConstInitVal>");
+            }
+            else {
+                System.out.println("constinitval error1");
+            }
+        }
+        else {
+            System.out.println("constinitval error2");
+        }
+        recordValue.setValues(values);
+        recordValue.setRes(res);
+        return recordValue;
     }
 
 
@@ -767,6 +858,30 @@ public class GrammerAnalyzer {
         }
         return res;
     }
+    //表达式
+    //Exp → AddExp
+    public Record ExpValue() {
+        ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res,0);
+        int value;
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//            res.addAll(AddExp());
+            Record record1 = AddExpValue();
+            value = record1.getRetValue();
+            res.addAll(record1.getRes());
+            res.add("<Exp>");
+            record.setRetValue(value);
+        }
+        else {
+            System.out.println("exp error1");
+        }
+        return record;
+    }
 
     //条件表达式
     //Cond → LOrExp
@@ -823,6 +938,73 @@ public class GrammerAnalyzer {
         }
         return res;
     }
+    //左值表达式
+    //LVal → Ident {'[' Exp ']'}
+    public Record LValValue() {
+        ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res,0);
+        int dim1 = 0;
+        int dim2 = 0;
+        int midvalue = 0;
+        int cishu = 0;
+        int dim;
+        int value = 0;
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            String lval_name = GrammerAnalyzerOutput.get(index).getValue();
+            Symbol symbol = curBlock.search(lval_name);
+            dim = symbol.getDim();
+            index++;
+            while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+                cishu++;
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//                    res.addAll(Exp);
+                    Record record1 = ExpValue();
+                    res.addAll(record1.getRes());
+                    midvalue = record1.getRetValue();
+                    if(cishu == 1 && dim == 1){
+                        dim1 = midvalue;
+                    }else if(cishu == 1 && dim == 2){
+                        dim2 = midvalue;
+                    }else if(cishu == 2 && dim == 2){
+                        dim1 = midvalue;
+                    }
+                    if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACK")) {
+                        res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                        index++;
+                    }
+                    else {
+                        System.out.println("lval error1");
+                    }
+                }
+                else {
+                    System.out.println("lval error2");
+                }
+            }
+            int off=0;
+            if(dim == 0){
+                off = 0;
+            }else if(dim == 1){
+                off = dim1;
+            }else if(dim == 2){
+                off = dim2 * symbol.getDim1() + dim1;
+            }
+            value = ((Const_symbol)symbol).getValues().get(off);
+            record.setRetValue(value);
+            res.add("<LVal>");
+        }
+        else {
+            System.out.println("lval error3");
+        }
+        return record;
+    }
 
     //基本表达式
     //PrimaryExp → '(' Exp ')' | LVal | Number
@@ -846,6 +1028,7 @@ public class GrammerAnalyzer {
                 break;
             case "INTCON":
                 res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+
                 index++;
                 res.add("<Number>");
                 res.add("<PrimaryExp>");
@@ -855,6 +1038,51 @@ public class GrammerAnalyzer {
                 break;
         }
         return res;
+    }
+
+    //基本表达式
+    //PrimaryExp → '(' Exp ')' | LVal | Number
+    public Record PrimaryExpValue() {
+        ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res,0);
+        //System.out.println("primaryexp");
+        int value;
+        int midvalue;
+        switch (GrammerAnalyzerOutput.get(index).getCategoryCode()) {
+            case "LPARENT":
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+//                res.addAll(Exp());
+                Record record1 = ExpValue();
+                res.addAll(record1.getRes());
+                value = record1.getRetValue();
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RPARENT")) {
+                    res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                    index++;
+                    res.add("<PrimaryExp>");
+                }
+                record.setRetValue(value);
+                break;
+            case "IDENFR":
+                Record record2 = LValValue();
+                res.addAll(record2.getRes());
+                res.add("<PrimaryExp>");
+                value = record2.getRetValue();
+                record.setRetValue(value);
+                break;
+            case "INTCON":
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                value = Integer.valueOf(GrammerAnalyzerOutput.get(index).getValue());
+                index++;
+                res.add("<Number>");
+                res.add("<PrimaryExp>");
+                record.setRetValue(value);
+                break;
+            default:
+                System.out.println("primaryexp error");
+                break;
+        }
+        return record;
     }
 
     //数值
@@ -923,6 +1151,49 @@ public class GrammerAnalyzer {
         }
         return res;
     }
+    //一元表达式
+    //UnaryExp → PrimaryExp | Ident '(' [FuncRParams] ')' | UnaryOp UnaryExp
+    //注意先识别调用函数的Ident '(' [FuncRParams] ')'，再识别基本表达式PrimaryExp
+    public Record UnaryExpValue() {
+        ArrayList<String> res = new ArrayList<>();
+        String op;
+        int midvalue;
+        int value = 0;
+        Record record = new Record(res,0);
+
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+            op = GrammerAnalyzerOutput.get(index).getValue();
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            index++;
+            res.add("<UnaryOp>");
+            Record record1 = UnaryExpValue();
+            midvalue = record1.getRetValue();
+            res.addAll(record1.getRes());
+            if(op.equals("+")){
+                value = midvalue;
+            }else if(op.equals("-")){
+                value = -1 * midvalue;
+            }
+            record.setRetValue(value);
+//            res.addAll(UnaryExp());
+            res.add("<UnaryExp>");
+        }
+        else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON")) {
+            Record record1 = PrimaryExpValue();
+            res.addAll(record1.getRes());
+            value = record1.getRetValue();
+//            res.addAll(PrimaryExp());
+            res.add("<UnaryExp>");
+            record.setRetValue(value);
+        }
+        else {
+            System.out.println("unaryexp error3");
+        }
+        return record;
+    }
 
     //单目运算符
     //UnaryOp → '+' | '−' | '!'
@@ -990,6 +1261,42 @@ public class GrammerAnalyzer {
         return res;
     }
 
+    //乘除模表达式
+    //MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp
+    //MulExp → UnaryExp { ('*' | '/' | '%') UnaryExp }
+    public Record MulExpValue(){
+        ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res, 0);
+        int value;
+        int midvalue;
+        String op;
+        Record record1 = UnaryExpValue();
+        res.addAll(record1.getRes());
+        value = record1.getRetValue();
+        res.add("<MulExp>");
+        while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MULT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("DIV") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MOD")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            op = GrammerAnalyzerOutput.get(index).getValue();
+            index++;
+//            res.addAll(UnaryExp());
+            Record record2 = UnaryExpValue();
+            res.addAll(record2.getRes());
+            midvalue = record2.getRetValue();
+            if (op.equals("*")){
+                value = value * midvalue;
+            }else if(op.equals("/")){
+                value = value / midvalue;
+            }else if (op.equals("%")){
+                value = value % midvalue;
+            }
+            res.add("<MulExp>");
+        }
+        record.setRetValue(value);
+        return record;
+    }
+
     //加减表达式
     //AddExp → MulExp | AddExp ('+' | '−') MulExp
     //AddExp → MulExp { ('+' | '−') MulExp }
@@ -1004,6 +1311,38 @@ public class GrammerAnalyzer {
             res.add("<AddExp>");
         }
         return res;
+    }
+    //加减表达式
+    //AddExp → MulExp | AddExp ('+' | '−') MulExp
+    //AddExp → MulExp { ('+' | '−') MulExp }
+    public Record AddExpValue(){
+        ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res, 0);
+        String op;
+        int value;
+        int midValue;
+        Record record1 = MulExpValue();
+        value = record1.getRetValue();
+        res.addAll(record1.getRes());
+        res.add("<AddExp>");
+        while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            op = GrammerAnalyzerOutput.get(index).getValue();
+            index++;
+//            res.addAll(MulExp());
+            Record record2 = MulExpValue();
+            midValue = record2.getRetValue();
+            res.addAll(record2.getRes());
+            if(op.equals("+")){
+                value = value + midValue;
+            }else if(op.equals("-")){
+                value = value - midValue;
+            }
+            res.add("<AddExp>");
+        }
+        record.setRetValue(value);
+        return record;
     }
 
     //关系表达式
@@ -1131,6 +1470,31 @@ public class GrammerAnalyzer {
             System.out.println("constexp error");
         }
         return res;
+    }
+    //常量表达式
+    //ConstExp → AddExp
+    public Record ConstExpValue(){
+        ArrayList<String> res = new ArrayList<>();
+        Record record = new Record(res, 0);
+        int value = 0;
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//            res.addAll(AddExp());
+            Record record1 = AddExpValue();
+            value = record1.getRetValue();
+            res.addAll(record1.getRes());
+            res.add("<ConstExp>");
+
+            record.setRetValue(value);
+        }
+        else {
+            System.out.println("constexp error");
+        }
+        return record;
     }
 
 }

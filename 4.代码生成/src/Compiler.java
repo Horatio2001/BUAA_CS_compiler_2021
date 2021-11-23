@@ -20,10 +20,10 @@ public class Compiler {
         //词法
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(content);
         ArrayList<LexicalAnalyzerForm> lexicalAnalyzerForms = lexicalAnalyzer.LexicalAnalyze();
-        TurnToFile.LexicalToFile(true, lexicalAnalyzerForms, "output.txt");
+        TurnToFile.LexicalToFile(false, lexicalAnalyzerForms, "output.txt");
         //语法
         GrammerAnalyzer grammerAnalyzer = new GrammerAnalyzer(lexicalAnalyzerForms);
-        TurnToFile.GrammerToFile(false,grammerAnalyzer.grammerAnalyze(),"output.txt" );
+        TurnToFile.GrammerToFile(true,grammerAnalyzer.grammerAnalyze(),"output.txt" );
         //错误处理
         //代码生成
     }

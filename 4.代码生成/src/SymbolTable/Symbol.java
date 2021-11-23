@@ -80,4 +80,8 @@ public class Symbol {
     public void setGlobal(boolean global) {
         isGlobal = global;
     }
+
+    public String getType(){
+        return null;
+    }
 }
