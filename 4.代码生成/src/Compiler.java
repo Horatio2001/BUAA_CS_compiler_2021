@@ -1,4 +1,5 @@
 import Grammer.GrammerAnalyzer;
+import IOTool.Interpreter;
 import Lexical.LexicalAnalyzer;
 import Lexical.LexicalAnalyzerForm;
 import IOTool.TurnToFile;
@@ -23,8 +24,10 @@ public class Compiler {
         TurnToFile.LexicalToFile(false, lexicalAnalyzerForms, "output.txt");
         //语法
         GrammerAnalyzer grammerAnalyzer = new GrammerAnalyzer(lexicalAnalyzerForms);
-        TurnToFile.GrammerToFile(true,grammerAnalyzer.grammerAnalyze(),"output.txt" );
+        TurnToFile.GrammerToFile(false,grammerAnalyzer.grammerAnalyze(),"output.txt" );
         //错误处理
         //代码生成
+        Interpreter interpreter = new Interpreter(grammerAnalyzer.getCodelist());
+        TurnToFile.PcodeToFile(true, interpreter.interpret(),"pcoderesult.txt");
     }
 }
