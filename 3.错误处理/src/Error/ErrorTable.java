@@ -9,6 +9,11 @@ public class ErrorTable {
         this.lineNum = lineNum;
     }
 
+    public void changeTable(ErrorTable errorTable){
+        this.type = errorTable.getType();
+        this.lineNum = errorTable.getLineNum();
+    }
+
     public String turnToFileFormat() {return this.lineNum + " " + this.type;}
 
     public String getType() {

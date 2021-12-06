@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class FuncRSymbolTable {
     private ArrayList<String> res;
-    private Symbol symbol;
+    private int returnDim;
 
-    public FuncRSymbolTable(ArrayList<String> res,Symbol symbol){
+    public FuncRSymbolTable(ArrayList<String> res,int returnDim){
         this.res = res;
-        this.symbol = symbol;
+        this.returnDim = returnDim;
     }
 
     public void setRes(ArrayList<String> res) {
@@ -21,11 +21,11 @@ public class FuncRSymbolTable {
         return res;
     }
 
-    public Symbol getSymbol() {
-        return symbol;
+    public int getReturnDim() {
+        return returnDim;
     }
 
-    public void setSymbol(Symbol symbol) {
-        this.symbol = symbol;
+    public void setReturnDim(int returnDim) {
+        this.returnDim = returnDim;
     }
 }

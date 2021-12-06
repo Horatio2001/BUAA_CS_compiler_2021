@@ -25,6 +25,7 @@ public class GrammerAnalyzer {
 
     private int jline;//j报错
     private int kline;//k报错
+    private int eline;//e报错
 
     Block curBlock = new Block("global",null,level);
     Func_symbol cur_func_symbol = null;
@@ -85,13 +86,17 @@ public class GrammerAnalyzer {
         }
         //主函数
         ismainfunc = true;
+//        System.out.println(GrammerAnalyzerOutput.get(index).getCategoryCode());
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTTK")) {
             res.addAll(MainFuncDef());
             res.add("<CompUnit>");
         } else {
+//            System.out.println(GrammerAnalyzerOutput.get(index).getCategoryCode());
             System.out.println("compunit main func error");
         }
         label1.setPoint(cur_func_symbol.getStartCode());
+
+
 
         curBlock.show();
 //        System.out.println("\nCodelist is below: \n");
@@ -390,7 +395,7 @@ public class GrammerAnalyzer {
     //VarDef → Ident { '[' ConstExp ']' } |  Ident { '[' ConstExp ']' } '=' InitVal
     public ArrayList<String> VarDef() {
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res,0);
+        Record record = new Record(res,0, 0);
         int cishu = 0;
         int dim1 = 0;
         int dim2 = 0;
@@ -600,9 +605,19 @@ public class GrammerAnalyzer {
                         }
                     }
                     else {
+//                        System.out.println(GrammerAnalyzerOutput.get(index).getCategoryCode());
                         ErrorTable errorTable = new ErrorTable(jline, "j");
                         ETB.add(errorTable);
                         System.out.println("funcdef error2");
+                        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACE")) {
+                            res.addAll(Block());
+                            res.add("<FuncDef>");
+                            label.setPoint(address);
+                            curBlock = curBlock.getFBlock();
+                        }
+                        else {
+                            System.out.println("funcdef error1");
+                        }
                     }
                 }
                 else {
@@ -840,7 +855,8 @@ public class GrammerAnalyzer {
 //            System.out.println((items.get(items.size()-1)));
 //            System.out.println((items.get(items.size()-1).equals("RETURNKK")));
 //            System.out.println("----------------------");
-            if (isIntFunc || ismainfunc){
+            System.out.println(curBlock.getLevel());
+            if ((isIntFunc || ismainfunc)&&curBlock.getLevel() == 2){
                 if (items.isEmpty() || (!(items.get(items.size()-1).equals("RETURNTK")))){
                     ErrorTable errorTable = new ErrorTable(GrammerAnalyzerOutput.get(index).getRow(),"g");
                     ETB.add(errorTable);
@@ -1124,7 +1140,7 @@ public class GrammerAnalyzer {
                             }
                         }//获得strcon中的%d数量
 
-                        System.out.println(sourceNum);
+//                        System.out.println(sourceNum);
 //                        System.out.println(strcon);
                         index++;
                         while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("COMMA")) {
@@ -1133,6 +1149,7 @@ public class GrammerAnalyzer {
                             res.addAll(Exp());
                             targetNum++;
                         }
+//                        System.out.println(targetNum);
                         if (sourceNum!=targetNum){
                             ErrorTable errorTable = new ErrorTable(lline,"l");
                             ETB.add(errorTable);
@@ -1316,8 +1333,9 @@ public class GrammerAnalyzer {
     //Exp → AddExp
     public Record ExpValue() {
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res,0);
+        Record record = new Record(res,0, 0);
         int value;
+        int dim;
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
@@ -1327,9 +1345,11 @@ public class GrammerAnalyzer {
 //            res.addAll(AddExp());
             Record record1 = AddExpValue();
             value = record1.getRetValue();
+            dim = record1.getRetDim();
             res.addAll(record1.getRes());
             res.add("<Exp>");
             record.setRetValue(value);
+            record.setRetDim(dim);
         }
         else {
             System.out.println("exp error1");
@@ -1337,29 +1357,36 @@ public class GrammerAnalyzer {
         return record;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    //表达式
-    //Exp → AddExp
-    public FuncRSymbolTable ExpFuncRSymbolTable() {
-        ArrayList<String> res = new ArrayList<>();
-        Symbol symbol = new Symbol("",0);
-        FuncRSymbolTable funcRSymbolTable = new FuncRSymbolTable(res,symbol);
-        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
-            res.addAll(AddExp());
-
-            res.add("<Exp>");
-        }
-        else {
-            System.out.println("exp error1");
-        }
-        return funcRSymbolTable;
+//    /////////////////////////////////////////////////////////////////////////
+//表达式
+//Exp → AddExp
+public RecordDim ExpDim() {
+    ArrayList<String> res = new ArrayList<>();
+    RecordDim recordDim = new RecordDim(res,0);
+//    Record record = new Record(res,0, 0);
+    int value;
+    int dim;
+    if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//            res.addAll(AddExp());
+        RecordDim recordDim1 = AddExpDim();
+//        value = recordDim1.getRetValue();
+        dim = recordDim1.getRetDim();
+        res.addAll(recordDim1.getRes());
+        res.add("<Exp>");
+//        recordDim.setRetValue(value);
+        recordDim.setRetDim(dim);
     }
-    ////////////////////////////////////////////////////////////////////////
+    else {
+        System.out.println("exp error1");
+    }
+    return recordDim;
+}
+//    ////////////////////////////////////////////////////////////////////////
 
     //条件表达式
     //Cond → LOrExp
@@ -1495,7 +1522,7 @@ public class GrammerAnalyzer {
     //LVal → Ident {'[' Exp ']'}
     public Record LValValue() {
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res,0);
+        Record record = new Record(res,0, 0);
         int dim1 = 0;
         int dim2 = 0;
         int midvalue = 0;
@@ -1571,6 +1598,125 @@ public class GrammerAnalyzer {
         return record;
     }
 
+    //左值表达式
+    //LVal → Ident {'[' Exp ']'}
+    public RecordDim LValDim() {
+        int tmp = 0;
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res,0);
+        int dim = 0;
+        int cishu = 0;
+        Symbol symbol = new Symbol("",0);
+
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            String lval_name = GrammerAnalyzerOutput.get(index).getValue();
+//            LvalSymbal.setName(lval_name);
+            if (curBlock.search(lval_name)==null){
+                ErrorTable errorTable = new ErrorTable(GrammerAnalyzerOutput.get(index).getRow(),"c");
+                ETB.add(errorTable);
+            }else{
+                symbol = curBlock.search(lval_name);
+            }
+
+            index++;
+//            Symbol symbol = curBlock.search(lval_name);
+
+            dim = symbol.getDim();
+            tmp = dim;
+            while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LBRACK")) {
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+                cishu++;
+                tmp--;
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+                    RecordDim recordDim1 = ExpDim();
+//                    res.addAll(Exp());
+                    res.addAll(recordDim1.getRes());
+                    if(cishu == 1 && dim == 2){
+                        Code code1 = new Code("LDC", symbol.getDim1());
+                        Code code2 = new Code("MUL");
+                        codelist.add(code1);
+                        codelist.add(code2);
+                    }
+                    kline = GrammerAnalyzerOutput.get(index-1).getRow();
+                    if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RBRACK")) {
+                        res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                        index++;
+                    }
+                    else {
+                        ErrorTable errorTable = new ErrorTable(kline,"k");
+                        ETB.add(errorTable);
+                        System.out.println("lval error1");
+                    }
+                }
+                else {
+                    System.out.println("lval error2");
+                }
+            }
+            if(symbol != null){
+                Code code1;
+                Code code2;
+                Code code3;
+                Code code4;
+                int isglobal = symbol.isGlobal()?1:0;
+                if(symbol.getDim() == 0){
+                    code1 = new Code("LDA", isglobal, symbol.getAddress());
+                    codelist.add(code1);
+                }else if(symbol.getDim() == 1 && cishu == 1){
+                    if(symbol.getType().equals("param")){
+                        code1 = new Code("LOD", isglobal, symbol.getAddress());
+                    }else {
+                        code1 = new Code("LDA", isglobal, symbol.getAddress());
+                    }
+                    code2 = new Code("ADD");
+                    codelist.add(code1);
+                    codelist.add(code2);
+                }else if(symbol.getDim() == 2 && cishu == 2){
+                    if(symbol.getType().equals("param")){
+                        code1 = new Code("LOD", isglobal, symbol.getAddress());
+                    }else {
+                        code1 = new Code("LDA", isglobal, symbol.getAddress());
+                    }
+                    code2 = new Code("ADD");
+                    code3 = new Code("ADD");
+                    codelist.add(code1);
+                    codelist.add(code2);
+                    codelist.add(code3);
+                }else if(cishu == 0 && (dim == 1 || dim == 2)){
+                    if(symbol.getType().equals("param")){
+                        code1 = new Code("LOD", isglobal, symbol.getAddress());
+                    }else {
+                        code1 = new Code("LDA", isglobal, symbol.getAddress());
+                    }
+                    codelist.add(code1);
+                    need_lods = false;
+                }else if(cishu == 1 && dim == 2){
+                    if(symbol.getType().equals("param")){
+                        code1 = new Code("LOD", isglobal, symbol.getAddress());
+                    }else {
+                        code1 = new Code("LDA", isglobal, symbol.getAddress());
+                    }
+                    code2 = new Code("ADD");
+                    codelist.add(code1);
+                    codelist.add(code2);
+                    need_lods = false;
+                }
+            }
+            res.add("<LVal>");
+        }
+        else {
+            System.out.println("lval error3");
+        }
+        recordDim.setRetDim(tmp);
+        return recordDim;
+    }
+
     //基本表达式
     //PrimaryExp → '(' Exp ')' | LVal | Number
     public ArrayList<String> PrimaryExp() {
@@ -1621,7 +1767,7 @@ public class GrammerAnalyzer {
     //PrimaryExp → '(' Exp ')' | LVal | Number
     public Record PrimaryExpValue() {
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res,0);
+        Record record = new Record(res,0, 0);
         //System.out.println("primaryexp");
         int value;
         int midvalue;
@@ -1667,6 +1813,63 @@ public class GrammerAnalyzer {
         return record;
     }
 
+    //基本表达式
+    //PrimaryExp → '(' Exp ')' | LVal | Number
+    public RecordDim PrimaryExpDim() {
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res,0);
+        int dim = 0;
+        //System.out.println("primaryexp");
+        switch (GrammerAnalyzerOutput.get(index).getCategoryCode()) {
+            case "LPARENT":
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+                RecordDim recordDim1 = ExpDim();
+//                res.addAll(Exp());
+                res.addAll(recordDim1.getRes());
+                dim = recordDim1.getRetDim();
+
+                jline = GrammerAnalyzerOutput.get(index - 1).getRow();
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RPARENT")) {
+                    res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                    index++;
+                    res.add("<PrimaryExp>");
+                }else{
+                    ErrorTable errorTable = new ErrorTable(jline,"j");
+                    ETB.add(errorTable);
+                    System.out.println("PrimaryExp error");
+                }
+                break;
+            case "IDENFR":
+                need_lods = true;
+                RecordDim recordDim2 = LValDim();
+//                res.addAll(LVal());
+                res.addAll(recordDim2.getRes());
+                dim = recordDim2.getRetDim();
+
+                if(need_lods){
+                    Code code1 = new Code("LODS");
+                    codelist.add(code1);
+                }
+                res.add("<PrimaryExp>");
+                break;
+            case "INTCON":
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                int value = Integer.valueOf(GrammerAnalyzerOutput.get(index).getValue());
+                Code code2 = new Code("LDC", value);
+                codelist.add(code2);
+                index++;
+                res.add("<Number>");
+                res.add("<PrimaryExp>");
+                break;
+            default:
+                System.out.println("primaryexp error");
+                break;
+        }
+        recordDim.setRetDim(dim);
+        return recordDim;
+    }
+
     //数值
     //Number → IntConst
     public ArrayList<String> Number() {
@@ -1685,9 +1888,11 @@ public class GrammerAnalyzer {
     //注意先识别调用函数的Ident '(' [FuncRParams] ')'，再识别基本表达式PrimaryExp
     public ArrayList<String> UnaryExp() {
         ArrayList<String> res = new ArrayList<>();
+        ArrayList<Integer> read_params_dim = new ArrayList<>();
         String op;
         int line;
         Symbol symbol = null;
+        //unaryOp unaryExps
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT")) {
@@ -1705,10 +1910,13 @@ public class GrammerAnalyzer {
             }
             res.add("<UnaryExp>");
         }
+        //Ident '(' [FuncRParams] ')'
         else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") &&
                 GrammerAnalyzerOutput.get(index + 1).getCategoryCode().equals("LPARENT")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             String fun_name = GrammerAnalyzerOutput.get(index).getValue();
+
+            eline = GrammerAnalyzerOutput.get(index).getRow();
 
             line = GrammerAnalyzerOutput.get(index).getRow();//记录函数名所在行
 
@@ -1733,21 +1941,37 @@ public class GrammerAnalyzer {
                         GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
                         GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
                         GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
-                    res.addAll(FuncRParams());
+                    RecordValue recordValue = FuncRParamsDim();
+//                    res.addAll(FuncRParams());
+                    res.addAll(recordValue.getRes());
+                    read_params_dim.addAll(recordValue.getValues());
 
                     if (symbol!=null){
-                        if (((Func_symbol)symbol).getParams().size()!=funcRParamNums){
+                        if (((Func_symbol)symbol).getParams().size()!=read_params_dim.size()){
                             ErrorTable errorTable = new ErrorTable(line,"d");
                             ETB.add(errorTable);
                         }
+                        for (int i = 0;i< ((Func_symbol)symbol).getParams().size();i++){
+                            if (((Func_symbol)symbol).getParams().get(i).getDim() != read_params_dim.get(i)){
+                                ErrorTable errorTable = new ErrorTable(eline,"e");
+                                ETB.add(errorTable);
+                                break;
+                            }
+                        }
                     }
                 }
+
                 if(symbol!=null){
+//                    for (int j=0;j<((Func_symbol)symbol).getParams().size();j++){
+//                        System.out.println(((Func_symbol)symbol).getParams().get(j).getName() +
+//                                " " + ((Func_symbol)symbol).getParams().get(j).getDim());
+//                    }
                     Code code2 = new Code("DOWN", 3+((Func_symbol)symbol).getParams().size());
                     codelist.add(code2);
                     Code code3 = new Code("CAL", ((Func_symbol)symbol).getStartCode());
                     codelist.add(code3);
                 }
+
 //                Code code2 = new Code("DOWN", 3+((Func_symbol)symbol).getParams().size());
 //                codelist.add(code2);
 //                Code code3 = new Code("CAL", ((Func_symbol)symbol).getStartCode());
@@ -1768,6 +1992,7 @@ public class GrammerAnalyzer {
                 System.out.println("unaryexp error2");
             }
         }
+        // primary exp
         else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON")) {
@@ -1787,8 +2012,9 @@ public class GrammerAnalyzer {
         String op;
         int midvalue;
         int value = 0;
-        Record record = new Record(res,0);
+        Record record = new Record(res,0, 0);
 
+        // UnaryOp UnaryExp
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
             op = GrammerAnalyzerOutput.get(index).getValue();
@@ -1807,6 +2033,7 @@ public class GrammerAnalyzer {
 //            res.addAll(UnaryExp());
             res.add("<UnaryExp>");
         }
+        //PrimaryExp
         else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON")) {
@@ -1818,9 +2045,140 @@ public class GrammerAnalyzer {
             record.setRetValue(value);
         }
         else {
-            System.out.println("unaryexp error3");
+            System.out.println("unaryexpvalue error3");
         }
         return record;
+    }
+
+    //一元表达式
+    //UnaryExp → PrimaryExp | Ident '(' [FuncRParams] ')' | UnaryOp UnaryExp
+    //注意先识别调用函数的Ident '(' [FuncRParams] ')'，再识别基本表达式PrimaryExp
+    public RecordDim UnaryExpDim() {
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res,0);
+        ArrayList<Integer> read_params_dim = new ArrayList<>();
+        String op;
+        int line;
+        int dim = 0;
+        Symbol symbol = null;
+        //unaryOp unaryExps
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            op = GrammerAnalyzerOutput.get(index).getValue();
+            index++;
+            res.add("<UnaryOp>");
+            RecordDim recordDim1 = UnaryExpDim();
+            res.addAll(recordDim1.getRes());
+            dim = recordDim1.getRetDim();
+
+            if(op.equals("-")){
+                Code code1 = new Code("MINU");
+                codelist.add(code1);
+            }else if(op.equals("!")){
+                Code code2 = new Code("NOT");
+                codelist.add(code2);
+            }
+            res.add("<UnaryExp>");
+        }
+        //Ident '(' [FuncRParams] ')'
+        else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") &&
+                GrammerAnalyzerOutput.get(index + 1).getCategoryCode().equals("LPARENT")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            String fun_name = GrammerAnalyzerOutput.get(index).getValue();
+
+            eline = GrammerAnalyzerOutput.get(index).getRow();
+
+            line = GrammerAnalyzerOutput.get(index).getRow();//记录函数名所在行
+
+            if (curBlock.search(fun_name)==null){
+                ErrorTable errorTable = new ErrorTable(GrammerAnalyzerOutput.get(index).getRow(),"c");
+                ETB.add(errorTable);
+            }else{
+                symbol = curBlock.search(fun_name);
+                dim = symbol.getDim();
+            }
+
+//            Symbol symbol = curBlock.search(fun_name);
+
+            Code code1 = new Code("INT", 3);
+            codelist.add(code1);
+            index++;
+            if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT")) {
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+                    RecordValue recordValue = FuncRParamsDim();
+//                    res.addAll(FuncRParams());
+                    res.addAll(recordValue.getRes());
+                    read_params_dim.addAll(recordValue.getValues());
+                    if (symbol!=null){
+                        if (((Func_symbol)symbol).getParams().size()!=read_params_dim.size()){
+                            ErrorTable errorTable = new ErrorTable(line,"d");
+                            ETB.add(errorTable);
+                        }
+                        for (int i = 0;i< ((Func_symbol)symbol).getParams().size();i++){
+                            if (((Func_symbol)symbol).getParams().get(i).getDim() != read_params_dim.get(i)){
+                                ErrorTable errorTable = new ErrorTable(eline,"e");
+                                ETB.add(errorTable);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(symbol!=null){
+//                    for (int j=0;j<((Func_symbol)symbol).getParams().size();j++){
+//                        System.out.println(((Func_symbol)symbol).getParams().get(j).getName() +
+//                                " " + ((Func_symbol)symbol).getParams().get(j).getDim());
+//                    }
+                    Code code2 = new Code("DOWN", 3+((Func_symbol)symbol).getParams().size());
+                    codelist.add(code2);
+                    Code code3 = new Code("CAL", ((Func_symbol)symbol).getStartCode());
+                    codelist.add(code3);
+                }
+
+//                Code code2 = new Code("DOWN", 3+((Func_symbol)symbol).getParams().size());
+//                codelist.add(code2);
+//                Code code3 = new Code("CAL", ((Func_symbol)symbol).getStartCode());
+//                codelist.add(code3);
+                jline = GrammerAnalyzerOutput.get(index-1).getRow();
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RPARENT")) {
+                    res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                    index++;
+                    res.add("<UnaryExp>");
+                }
+                else {
+                    ErrorTable errorTable = new ErrorTable(jline,"j");
+                    ETB.add(errorTable);
+                    System.out.println("unaryexp error1");
+                }
+            }
+            else {
+                System.out.println("unaryexp error2");
+            }
+        }
+        // primary exp
+        else if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON")) {
+            RecordDim recordDim1 = PrimaryExpDim();
+//            res.addAll(PrimaryExp());
+            res.addAll(recordDim1.getRes());
+            dim = recordDim1.getRetDim();
+            res.add("<UnaryExp>");
+        }
+        else {
+            System.out.println("unaryexp error3");
+        }
+        recordDim.setRetDim(dim);
+        return recordDim;
     }
 
     //单目运算符
@@ -1845,12 +2203,14 @@ public class GrammerAnalyzer {
         ArrayList<String> res = new ArrayList<>();
         //ArrayList<Symbol> FuncRParamsSymbolTable = null;
         int paramNum = 0;
-        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||//?
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||//-1 0 1 2
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||// 0
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+            // Record record = ExpValue();
+            // res.addAll(record.getRes());
             res.addAll(Exp());
             funcRParamNums++;
             while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("COMMA")) {
@@ -1875,6 +2235,58 @@ public class GrammerAnalyzer {
             System.out.println("funcrparams error2");
         }
         return res;
+    }
+
+    //函数实参表
+    //FuncRParams → Exp { ',' Exp }
+    public RecordValue FuncRParamsDim() {
+        funcRParamNums = 0;
+        ArrayList<String> res = new ArrayList<>();
+        ArrayList<Integer> dims = new ArrayList<>();
+
+        RecordValue recordValue = new RecordValue(res,dims);
+
+        //ArrayList<Symbol> FuncRParamsSymbolTable = null;
+        int paramNum = 0;
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||//?
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||//-1 0 1 2
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||// 0
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+            // Record record = ExpValue();
+            // res.addAll(record.getRes());
+            RecordDim recordDim = ExpDim();
+//            res.addAll(Exp()) ;
+            res.addAll(recordDim.getRes());
+            dims.add(recordDim.getRetDim());
+            funcRParamNums++;
+            while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("COMMA")) {
+                res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+                index++;
+                if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                        GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+                    RecordDim recordDim1 = ExpDim();
+//                    res.addAll(Exp());
+                    res.addAll(recordDim1.getRes());
+                    dims.add(recordDim1.getRetDim());
+                    funcRParamNums++;
+                }
+                else {
+                    System.out.println("funcrparams error1");
+                }
+            }
+            res.add("<FuncRParams>");
+        }
+        else {
+            System.out.println("funcrparams error2");
+        }
+
+        return recordValue;
     }
 
     //乘除模表达式
@@ -1911,7 +2323,7 @@ public class GrammerAnalyzer {
     //MulExp → UnaryExp { ('*' | '/' | '%') UnaryExp }
     public Record MulExpValue(){
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res, 0);
+        Record record = new Record(res, 0, 0);
         int value;
         int midvalue;
         String op;
@@ -1940,6 +2352,46 @@ public class GrammerAnalyzer {
         }
         record.setRetValue(value);
         return record;
+    }
+
+    //乘除模表达式
+    //MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp
+    //MulExp → UnaryExp { ('*' | '/' | '%') UnaryExp }
+    public RecordDim MulExpDim(){
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res, 0);
+//        Record record = new Record(res, 0, 0);
+        int value;
+        int midvalue;
+        int dim;
+        String op;
+        RecordDim recorddim1 = UnaryExpDim();
+        res.addAll(recorddim1.getRes());
+//        value = recorddim1.getRetValue();
+        dim = recorddim1.getRetDim();
+        res.add("<MulExp>");
+        while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MULT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("DIV") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MOD")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            op = GrammerAnalyzerOutput.get(index).getValue();
+            index++;
+//            res.addAll(UnaryExp());
+            RecordDim recorddim2 = UnaryExpDim();
+            res.addAll(recorddim2.getRes());
+//            midvalue = recorddim2.getRetValue();
+//            if (op.equals("*")){
+//                value = value * midvalue;
+//            }else if(op.equals("/")){
+//                value = value / midvalue;
+//            }else if (op.equals("%")){
+//                value = value % midvalue;
+//            }
+            res.add("<MulExp>");
+        }
+//        record.setRetValue(value);
+        recordDim.setRetDim(dim);
+        return recordDim;
     }
 
     //加减表达式
@@ -1972,7 +2424,7 @@ public class GrammerAnalyzer {
     //AddExp → MulExp { ('+' | '−') MulExp }
     public Record AddExpValue(){
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res, 0);
+        Record record = new Record(res, 0, 0);
         String op;
         int value;
         int midValue;
@@ -1998,6 +2450,46 @@ public class GrammerAnalyzer {
         }
         record.setRetValue(value);
         return record;
+    }
+
+    //加减表达式
+    //AddExp → MulExp | AddExp ('+' | '−') MulExp
+    //AddExp → MulExp { ('+' | '−') MulExp }
+    public RecordDim AddExpDim(){
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res,0);
+//        Record record = new Record(res, 0, 0);
+        String op;
+        int dim;
+        int value;
+        int midValue;
+        RecordDim recordDim1 = MulExpDim();
+//        value = recordDim1.getRetValue();
+        dim = recordDim1.getRetDim();
+
+        res.addAll(recordDim1.getRes());
+        res.add("<AddExp>");
+
+        while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+            op = GrammerAnalyzerOutput.get(index).getValue();
+            index++;
+//            res.addAll(MulExp());
+            RecordDim recorddim2 = MulExpDim();
+//            midValue = record2.getRetValue();
+            res.addAll(recorddim2.getRes());
+//            if(op.equals("+")){
+//                value = value + midValue;
+//            }else if(op.equals("-")){
+//                value = value - midValue;
+//            }
+            res.add("<AddExp>");
+        }
+
+        recordDim.setRetDim(dim);
+//        recordDim.setRetValue(value);
+        return recordDim;
     }
 
     //关系表达式
@@ -2169,7 +2661,7 @@ public class GrammerAnalyzer {
     //ConstExp → AddExp
     public Record ConstExpValue(){
         ArrayList<String> res = new ArrayList<>();
-        Record record = new Record(res, 0);
+        Record record = new Record(res, 0, 0);
         int value = 0;
         if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
@@ -2191,5 +2683,35 @@ public class GrammerAnalyzer {
         return record;
     }
 
+    //常量表达式
+    //ConstExp → AddExp
+    public RecordDim ConstExpDim(){
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res,0);
+//        Record record = new Record(res, 0, 0);
+        int value = 0;
+        int dim = 0;
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//            res.addAll(AddExp());
+            RecordDim recordDim1 = AddExpDim();
+//            value = recordDim1.getRetValue();
+            dim = recordDim1.getRetDim();
+
+            res.addAll(recordDim1.getRes());
+            res.add("<ConstExp>");
+
+//            recordDim.setRetValue(value);
+            recordDim.setRetDim(dim);
+        }
+        else {
+            System.out.println("constexp error");
+        }
+        return recordDim;
+    }
 }
 

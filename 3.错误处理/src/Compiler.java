@@ -4,6 +4,7 @@ import Lexical.LexicalAnalyzer;
 import Lexical.LexicalAnalyzerForm;
 import IOTool.TurnToFile;
 import Error.ErrorTable;
+import  IOTool.ETBSorter;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class Compiler {
         //词法
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(content);
         ArrayList<LexicalAnalyzerForm> lexicalAnalyzerForms = lexicalAnalyzer.LexicalAnalyze();
-        TurnToFile.LexicalToFile(true, lexicalAnalyzerForms, "output.txt");
+        TurnToFile.LexicalToFile(false, lexicalAnalyzerForms, "output.txt");
         ETB.addAll(lexicalAnalyzer.getErrorTables());
 
         //语法
@@ -33,11 +34,12 @@ public class Compiler {
 
         //错误处理
         //System.out.println(ETB.get(0).turnToFileFormat());
+        ETBSorter.ETBSort(ETB);
         TurnToFile.ErrorToFile(true,ETB,"error.txt");
 
         //代码生成
-        Interpreter interpreter = new Interpreter(grammerAnalyzer.getCodelist());
+//        Interpreter interpreter = new Interpreter(grammerAnalyzer.getCodelist());
 //        System.out.println(interpreter.interpret());
-        TurnToFile.PcodeToFile(false, interpreter.interpret(),"pcoderesult.txt");
+//        TurnToFile.PcodeToFile(true, interpreter.interpret(),"pcoderesult.txt");
     }
 }
