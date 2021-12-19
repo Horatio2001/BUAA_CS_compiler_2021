@@ -6,7 +6,6 @@ import MidCode.Label;
 import SymbolTable.*;
 import Error.*;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -96,9 +95,7 @@ public class GrammerAnalyzer {
         }
         label1.setPoint(cur_func_symbol.getStartCode());
 
-
-
-        curBlock.show();
+//        curBlock.show();
 //        System.out.println("\nCodelist is below: \n");
 //        int i = 0;
 //        for(Code code:codelist){
@@ -855,7 +852,7 @@ public class GrammerAnalyzer {
 //            System.out.println((items.get(items.size()-1)));
 //            System.out.println((items.get(items.size()-1).equals("RETURNKK")));
 //            System.out.println("----------------------");
-            System.out.println(curBlock.getLevel());
+//            System.out.println(curBlock.getLevel());
             if ((isIntFunc || ismainfunc)&&curBlock.getLevel() == 2){
                 if (items.isEmpty() || (!(items.get(items.size()-1).equals("RETURNTK")))){
                     ErrorTable errorTable = new ErrorTable(GrammerAnalyzerOutput.get(index).getRow(),"g");
@@ -1357,36 +1354,34 @@ public class GrammerAnalyzer {
         return record;
     }
 
-//    /////////////////////////////////////////////////////////////////////////
-//表达式
-//Exp → AddExp
-public RecordDim ExpDim() {
-    ArrayList<String> res = new ArrayList<>();
-    RecordDim recordDim = new RecordDim(res,0);
-//    Record record = new Record(res,0, 0);
-    int value;
-    int dim;
-    if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
-            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
-            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
-            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
-            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
-            GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
-//            res.addAll(AddExp());
-        RecordDim recordDim1 = AddExpDim();
-//        value = recordDim1.getRetValue();
-        dim = recordDim1.getRetDim();
-        res.addAll(recordDim1.getRes());
-        res.add("<Exp>");
-//        recordDim.setRetValue(value);
-        recordDim.setRetDim(dim);
+///////////////////////////////////////////////////////////////////////////
+    //表达式
+    //Exp → AddExp
+    public RecordDim ExpDim() {
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res,0);
+        int dim;
+        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+    //            res.addAll(AddExp());
+            RecordDim recordDim1 = AddExpDim();
+    //        value = recordDim1.getRetValue();
+            dim = recordDim1.getRetDim();
+            res.addAll(recordDim1.getRes());
+            res.add("<Exp>");
+    //        recordDim.setRetValue(value);
+            recordDim.setRetDim(dim);
+        }
+        else {
+            System.out.println("exp error1");
+        }
+        return recordDim;
     }
-    else {
-        System.out.println("exp error1");
-    }
-    return recordDim;
-}
-//    ////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
     //条件表达式
     //Cond → LOrExp
@@ -1962,20 +1957,12 @@ public RecordDim ExpDim() {
                 }
 
                 if(symbol!=null){
-//                    for (int j=0;j<((Func_symbol)symbol).getParams().size();j++){
-//                        System.out.println(((Func_symbol)symbol).getParams().get(j).getName() +
-//                                " " + ((Func_symbol)symbol).getParams().get(j).getDim());
-//                    }
                     Code code2 = new Code("DOWN", 3+((Func_symbol)symbol).getParams().size());
                     codelist.add(code2);
                     Code code3 = new Code("CAL", ((Func_symbol)symbol).getStartCode());
                     codelist.add(code3);
                 }
 
-//                Code code2 = new Code("DOWN", 3+((Func_symbol)symbol).getParams().size());
-//                codelist.add(code2);
-//                Code code3 = new Code("CAL", ((Func_symbol)symbol).getStartCode());
-//                codelist.add(code3);
                 jline = GrammerAnalyzerOutput.get(index-1).getRow();
                 if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("RPARENT")) {
                     res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
@@ -2357,39 +2344,75 @@ public RecordDim ExpDim() {
     //乘除模表达式
     //MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp
     //MulExp → UnaryExp { ('*' | '/' | '%') UnaryExp }
+//    public RecordDim MulExpDim(){
+//        ArrayList<String> res = new ArrayList<>();
+//        RecordDim recordDim = new RecordDim(res, 0);
+////        Record record = new Record(res, 0, 0);
+//        int value;
+//        int midvalue;
+//        int dim;
+//        String op;
+//        RecordDim recorddim1 = UnaryExpDim();
+//        res.addAll(recorddim1.getRes());
+////        value = recorddim1.getRetValue();
+//        dim = recorddim1.getRetDim();
+//        res.add("<MulExp>");
+//        while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MULT") ||
+//                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("DIV") ||
+//                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MOD")) {
+//            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+//            op = GrammerAnalyzerOutput.get(index).getValue();
+//            index++;
+////            res.addAll(UnaryExp());
+//            RecordDim recorddim2 = UnaryExpDim();
+//            res.addAll(recorddim2.getRes());
+////            midvalue = recorddim2.getRetValue();
+////            if (op.equals("*")){
+////                value = value * midvalue;
+////            }else if(op.equals("/")){
+////                value = value / midvalue;
+////            }else if (op.equals("%")){
+////                value = value % midvalue;
+////            }
+//            res.add("<MulExp>");
+//        }
+////        record.setRetValue(value);
+//        recordDim.setRetDim(dim);
+//        return recordDim;
+//    }
+    //乘除模表达式
+    //MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp
+    //MulExp → UnaryExp { ('*' | '/' | '%') UnaryExp }
     public RecordDim MulExpDim(){
+        int dim;
         ArrayList<String> res = new ArrayList<>();
         RecordDim recordDim = new RecordDim(res, 0);
-//        Record record = new Record(res, 0, 0);
-        int value;
-        int midvalue;
-        int dim;
-        String op;
-        RecordDim recorddim1 = UnaryExpDim();
-        res.addAll(recorddim1.getRes());
-//        value = recorddim1.getRetValue();
-        dim = recorddim1.getRetDim();
+        RecordDim recordDim1 = UnaryExpDim();
+        res.addAll(recordDim1.getRes());
+        dim = recordDim1.getRetDim();
         res.add("<MulExp>");
+        String op;
         while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MULT") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("DIV") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MOD")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             op = GrammerAnalyzerOutput.get(index).getValue();
             index++;
+            RecordDim recordDim2 = UnaryExpDim();
 //            res.addAll(UnaryExp());
-            RecordDim recorddim2 = UnaryExpDim();
-            res.addAll(recorddim2.getRes());
-//            midvalue = recorddim2.getRetValue();
-//            if (op.equals("*")){
-//                value = value * midvalue;
-//            }else if(op.equals("/")){
-//                value = value / midvalue;
-//            }else if (op.equals("%")){
-//                value = value % midvalue;
-//            }
+            res.addAll(recordDim2.getRes());
+            if(op.equals("*")){
+                Code code1 = new Code("MUL");
+                codelist.add(code1);
+            } else if (op.equals("/")) {
+                Code code2 = new Code("DIV");
+                codelist.add(code2);
+            }else if(op.equals("%")){
+                Code code3 = new Code("MOD");
+                codelist.add(code3);
+            }
             res.add("<MulExp>");
         }
-//        record.setRetValue(value);
         recordDim.setRetDim(dim);
         return recordDim;
     }
@@ -2455,40 +2478,76 @@ public RecordDim ExpDim() {
     //加减表达式
     //AddExp → MulExp | AddExp ('+' | '−') MulExp
     //AddExp → MulExp { ('+' | '−') MulExp }
-    public RecordDim AddExpDim(){
-        ArrayList<String> res = new ArrayList<>();
-        RecordDim recordDim = new RecordDim(res,0);
-//        Record record = new Record(res, 0, 0);
-        String op;
-        int dim;
-        int value;
-        int midValue;
-        RecordDim recordDim1 = MulExpDim();
-//        value = recordDim1.getRetValue();
-        dim = recordDim1.getRetDim();
+//    public RecordDim AddExpDim(){
+//        ArrayList<String> res = new ArrayList<>();
+//        RecordDim recordDim = new RecordDim(res,0);
+//        String op;
+//        int dim;
+//        int value;
+//        int midValue;
+//        RecordDim recordDim1 = MulExpDim();
+////        value = recordDim1.getRetValue();
+//        dim = recordDim1.getRetDim();
+//
+//        res.addAll(recordDim1.getRes());
+//        res.add("<AddExp>");
+//
+//        while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
+//                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
+//            res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
+//            op = GrammerAnalyzerOutput.get(index).getValue();
+//            index++;
+////            res.addAll(MulExp());
+//            RecordDim recorddim2 = MulExpDim();
+////            midValue = record2.getRetValue();
+//            res.addAll(recorddim2.getRes());
+////            if(op.equals("+")){
+////                value = value + midValue;
+////            }else if(op.equals("-")){
+////                value = value - midValue;
+////            }
+//            res.add("<AddExp>");
+//        }
+//
+//        recordDim.setRetDim(dim);
+////        recordDim.setRetValue(value);
+//        return recordDim;
+//    }
 
+    //加减表达式
+    //AddExp → MulExp | AddExp ('+' | '−') MulExp
+    //AddExp → MulExp { ('+' | '−') MulExp }
+    public RecordDim AddExpDim(){
+        int dim;
+        ArrayList<String> res = new ArrayList<>();
+        RecordDim recordDim = new RecordDim(res, 0);
+
+        RecordDim recordDim1 = MulExpDim();
+        dim = recordDim1.getRetDim();
         res.addAll(recordDim1.getRes());
         res.add("<AddExp>");
+        String op;
 
         while (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
                 GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
             res.add(GrammerAnalyzerOutput.get(index).turnToFileFormat());
             op = GrammerAnalyzerOutput.get(index).getValue();
             index++;
+            RecordDim recordDim2 = MulExpDim();
+            res.addAll(recordDim2.getRes());
 //            res.addAll(MulExp());
-            RecordDim recorddim2 = MulExpDim();
-//            midValue = record2.getRetValue();
-            res.addAll(recorddim2.getRes());
-//            if(op.equals("+")){
-//                value = value + midValue;
-//            }else if(op.equals("-")){
-//                value = value - midValue;
-//            }
+            if(op.equals("+")){
+                Code code1 =new Code("ADD");
+                codelist.add(code1);
+            }else if(op.equals("-")){
+                Code code2 = new Code("SUB");
+                codelist.add(code2);
+            }
+
             res.add("<AddExp>");
         }
-
         recordDim.setRetDim(dim);
-//        recordDim.setRetValue(value);
+        recordDim.setRes(res);
         return recordDim;
     }
 
@@ -2683,35 +2742,5 @@ public RecordDim ExpDim() {
         return record;
     }
 
-    //常量表达式
-    //ConstExp → AddExp
-    public RecordDim ConstExpDim(){
-        ArrayList<String> res = new ArrayList<>();
-        RecordDim recordDim = new RecordDim(res,0);
-//        Record record = new Record(res, 0, 0);
-        int value = 0;
-        int dim = 0;
-        if (GrammerAnalyzerOutput.get(index).getCategoryCode().equals("LPARENT") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("IDENFR") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("INTCON") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("NOT") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("PLUS") ||
-                GrammerAnalyzerOutput.get(index).getCategoryCode().equals("MINU")) {
-//            res.addAll(AddExp());
-            RecordDim recordDim1 = AddExpDim();
-//            value = recordDim1.getRetValue();
-            dim = recordDim1.getRetDim();
-
-            res.addAll(recordDim1.getRes());
-            res.add("<ConstExp>");
-
-//            recordDim.setRetValue(value);
-            recordDim.setRetDim(dim);
-        }
-        else {
-            System.out.println("constexp error");
-        }
-        return recordDim;
-    }
 }
 

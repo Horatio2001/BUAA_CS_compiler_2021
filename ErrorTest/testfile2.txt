@@ -1,0 +1,201 @@
+int va1
+int vb1, vc1
+int vd1[3]
+int ve1[3], vf1
+int vg1, vh1[3]
+int vi1[3][3]
+
+const int ca = 0
+const int cb = 0, cc = 0
+const int cd[3] = {0, 0, 0}
+const int ce[3] = {0, 0, 0}, cf = 0
+const int cg = 0, ch[3] = {0, 0, 0}
+const int ci[2][2] = {{0, 0}, {0, 0}}
+
+int va2 = 0
+int vb2 = 0, vc2 = 0
+int vd2[3] = {0, 0, 0}
+int ve2[3] = {0, 0, 0}, vf2 = 0
+int vg2 = 0, vh2[3] = {0, 0, 0}
+int vi2[2][2] = {{0, 0}, {0, 0}}
+
+int lvd1[3
+int lve1[3, lvf1
+int lvg1, lvh1[3
+int lvi1[3[3
+
+const int lcd[3 = {0, 0, 0}
+const int lce[3 = {0, 0, 0}, lcf = 0
+const int lcg = 0, lch[3 = {0, 0, 0}
+const int lci[2[2 = {{0, 0}, {0, 0}}
+
+int lvd2[3 = {0, 0, 0}
+int lve2[3 = {0, 0, 0}, lvf2 = 0
+int lvg2 = 0, lvh2[3 = {0, 0, 0}
+int lvi2[2[2 = {{0, 0}, {0, 0}}
+
+void f1() {
+    return
+}
+
+int f2() {
+    return 1
+}
+
+int f3(int a[) {
+    return 0
+}
+
+int f4(int a[[2) {
+    return 0
+}
+
+int f5(int a[[2, int b[) {
+    return 0
+}
+
+void ff1( {
+    return
+}
+
+int ff2( {
+    return 1
+}
+
+int ff3(int a[ {
+    return 0
+}
+
+int ff4(int a[[2 {
+    return 0
+}
+
+int ff5(int a[[2, int b[ {
+    return 0
+}
+
+int main( {
+    int iva1
+    int ivb1, ivc1
+    int ivd1[3]
+    int ive1[3], ivf1
+    int ivg1, ivh1[3]
+    int ivi1[3][3]
+
+    const int ica = 0
+    const int icb = 0, icc = 0
+    const int icd[3] = {0, 0, 0}
+    const int ice[3] = {0, 0, 0}, icf = 0
+    const int icg = 0, ich[3] = {0, 0, 0}
+    const int ici[2][2] = {{0, 0}, {0, 0}}
+
+    int iva2 = 0
+    int ivb2 = 0, ivc2 = 0
+    int ivd2[3] = {0, 0, 0}
+    int ive2[3] = {0, 0, 0}, ivf2 = 0
+    int ivg2 = 0, ivh2[3] = {0, 0, 0}
+    int ivi2[2][2] = {{0, 0}, {0, 0}}
+
+    int ilvd1[3
+    int ilve1[3, ilvf1
+    int ilvg1, ilvh1[3
+    int ilvi1[3[3
+
+    const int ilcd[3 = {0, 0, 0}
+    const int ilce[3 = {0, 0, 0}, ilcf = 0
+    const int ilcg = 0, ilch[3 = {0, 0, 0}
+    const int ilci[2[2 = {{0, 0}, {0, 0}}
+
+    int ilvd2[3 = {0, 0, 0}
+    int ilve2[3 = {0, 0, 0}, ilvf2 = 0
+    int ilvg2 = 0, ilvh2[3 = {0, 0, 0}
+    int ilvi2[2[2 = {{0, 0}, {0, 0}}
+
+    1
+    2
+    1 + 2
+    x = 1
+    y = 2
+    z = 1 + 2
+    w = 1 + 2 * (3 + 4 * 5
+    xx[0 = 1
+    yy[0[1 = 2
+    zz[0[1] = 2
+    ww[0][1 = 2
+    yyy[f2() = 1
+    yyy[f2(] = 1
+
+    zzz[1][2]
+    zzz[1][2] = 1
+
+    zzz[1[2]
+    zzz[1[2] = 1
+
+    zzz[1][2
+    zzz[1][2 = 1
+
+    zzz[1[2
+    zzz[1[2 = 1
+
+    while (0) {
+        break
+        continue
+        break continue
+    }
+
+    while (0) break
+    while (1) break
+
+    x = getint()
+    if (1) x = getint()
+    if (1) x = getint()
+    else x = getint()
+
+    y = getint(
+    if (1) y = getint(
+    if (1) y = getint(
+    else y = getint(
+
+    x = x + y
+    if (1) x = x + y
+    if (1) x = x + y
+    else x = x + y
+
+    y = f3(1
+    if (1) y = f3(1
+    if (1) y = f3(1
+    else y = f3(1
+
+    while (0 break
+    while (1 break
+
+    x = getint()
+    if (1 x = getint()
+    if (1 x = getint()
+    else x = getint()
+
+    y = getint(
+    if (1 y = getint(
+    if (1 y = getint(
+    else y = getint(
+
+    x = x + y
+    if (1 x = x + y
+    if (1 x = x + y
+    else x = x + y
+
+    y = f3(1 
+    if (1 y = f3(1 
+    if (1 y = f3(1 
+    else y = f3(1 
+
+    printf("hello world")
+    printf
+    ("hello world")
+
+    printf("hello world"
+    printf
+    ("hello world"
+
+    return 0
+}

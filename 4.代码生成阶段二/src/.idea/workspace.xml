@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d039246e-9f81-4f08-bea5-25be3771ed92" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Compiler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Error/ErrorTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Error/FuncRSymbolTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Grammer/GrammerAnalyzer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Grammer/Record.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Grammer/RecordDim.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Grammer/RecordValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/IOTool/ETBSorter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/IOTool/Interpreter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/IOTool/TurnToFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Lexical/LexicalAnalyzer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Lexical/LexicalAnalyzerForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/Lexical/LexicalJudge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/MidCode/Code.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/MidCode/Label.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/SymbolTable/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/SymbolTable/Const_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/SymbolTable/Func_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/SymbolTable/Param_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/SymbolTable/Symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../3.错误处理/src/SymbolTable/Var_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Compiler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Grammer/GrammerAnalyzer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Grammer/Record.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Grammer/RecordValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/IOTool/Interpreter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/IOTool/TurnToFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Lexical/LexicalAnalyzer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Lexical/LexicalAnalyzerForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/Lexical/LexicalJudge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/MidCode/Code.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/MidCode/Label.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/SymbolTable/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/SymbolTable/Const_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/SymbolTable/Func_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/SymbolTable/Param_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/SymbolTable/Symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../4.代码生成阶段一/src/SymbolTable/Var_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Compiler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Grammer/GrammerAnalyzer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Grammer/Record.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Grammer/RecordValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/IOTool/Interpreter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/IOTool/TurnToFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Lexical/LexicalAnalyzer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Lexical/LexicalAnalyzerForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/Lexical/LexicalJudge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/MidCode/Code.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/MidCode/Label.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/SymbolTable/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/SymbolTable/Const_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/SymbolTable/Func_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/SymbolTable/Param_symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/SymbolTable/Symbol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5.代码生成阶段二/src/SymbolTable/Var_symbol.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="21uQi7IBMfnBlDr4NnHQqICbvxm" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d039246e-9f81-4f08-bea5-25be3771ed92" name="Changes" comment="" />
+      <created>1638788616752</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1638788616752</updated>
+      <workItem from="1638788618380" duration="13000" />
+      <workItem from="1638788831326" duration="1217000" />
+      <workItem from="1639652611694" duration="21000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

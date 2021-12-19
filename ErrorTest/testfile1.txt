@@ -1,0 +1,856 @@
+int main() {
+    break;
+    break
+    ;
+    continue;
+    continue
+    ;
+    break; continue;
+    { break; }
+    { continue; }
+    { break; continue; }
+
+    if (1) break;
+    if (1) continue;
+    if (1) break;
+    else break;
+    if (1) continue;
+    else continue;
+    if (1) break;
+    else continue;
+    if (1) continue;
+    else break;
+    while (0) break;
+    while (0) continue;
+
+    {
+        break;
+        break
+        ;
+        continue;
+        continue
+        ;
+        break; continue;
+        { break; }
+        { continue; }
+        { break; continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        else break;
+        if (1) continue;
+        else continue;
+        if (1) break;
+        else continue;
+        if (1) continue;
+        else break;
+        while (0) break;
+        while (0) continue;
+    }
+
+    if (1) {
+        break;
+        continue;
+        { break; }
+        { continue; }
+        { break; continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        else break;
+        if (1) continue;
+        else continue;
+        if (1) break;
+        else continue;
+        if (1) continue;
+        else break;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+            { break; continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            else break;
+            if (1) continue;
+            else continue;
+            if (1) break;
+            else continue;
+            if (1) continue;
+            else break;
+            while (0) break;
+            while (0) continue;
+        }
+    }
+
+    if (1) {
+        break;
+        continue;
+        { break; }
+        { continue; }
+        { break; continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        else break;
+        if (1) continue;
+        else continue;
+        if (1) break;
+        else continue;
+        if (1) continue;
+        else break;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+            { break; continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            else break;
+            if (1) continue;
+            else continue;
+            if (1) break;
+            else continue;
+            if (1) continue;
+            else break;
+            while (0) break;
+            while (0) continue;
+        }
+    }
+    else {
+        break;
+        continue;
+        { break; }
+        { continue; }
+        { break; continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        else break;
+        if (1) continue;
+        else continue;
+        if (1) break;
+        else continue;
+        if (1) continue;
+        else break;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+            { break; continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            else break;
+            if (1) continue;
+            else continue;
+            if (1) break;
+            else continue;
+            if (1) continue;
+            else break;
+            while (0) break;
+            while (0) continue;
+        }
+    }
+
+    while (0) {
+        break;
+        continue;
+        { break; }
+        { continue; }
+        { break; continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        else break;
+        if (1) continue;
+        else continue;
+        if (1) break;
+        else continue;
+        if (1) continue;
+        else break;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+            { break; continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            else break;
+            if (1) continue;
+            else continue;
+            if (1) break;
+            else continue;
+            if (1) continue;
+            else break;
+            while (0) break;
+            while (0) continue;
+        }
+    }
+
+    if (1) {
+        break;
+        continue;
+        { break; }
+        { continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        if (1) break;
+        else continue;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+        }
+
+        if (1) {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+        else {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+
+        while (0) {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+    }
+    else {
+        break;
+        continue;
+        { break; }
+        { continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        if (1) break;
+        else continue;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+        }
+
+        if (1) {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+        else {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+
+        while (0) {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+    }
+
+    while (0) {
+        break;
+        continue;
+        { break; }
+        { continue; }
+
+        if (1) break;
+        if (1) continue;
+        if (1) break;
+        if (1) break;
+        else continue;
+        while (0) break;
+        while (0) continue;
+
+        {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+        }
+
+        if (1) {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+        else {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+
+        while (0) {
+            break;
+            continue;
+            { break; }
+            { continue; }
+
+            if (1) break;
+            if (1) continue;
+            if (1) break;
+            if (1) break;
+            else continue;
+            while (0) break;
+            while (0) continue;
+
+            {
+                break;
+                continue;
+                { break; }
+                { continue; }
+
+                if (1) break;
+                if (1) continue;
+                if (1) break;
+                if (1) break;
+                else continue;
+                while (0) break;
+                while (0) continue;
+            }
+        }
+    }
+
+    printf("hello %d %d world");
+    printf("hello %d %d world", 1);
+    printf("hello %d %d world", 1, 1);
+    printf("hello %d %d world", 1, 1, 1);
+
+    printf("hello % %d %d world");
+    printf("hello % %d %d world", 1);
+    printf("hello % %d %d world", 1, 1);
+    printf("hello % %d %d world", 1, 1, 1);
+
+    printf("hello % % %d %d world");
+    printf("hello % % %d %d world", 1);
+    printf("hello % % %d %d world", 1, 1);
+    printf("hello % % %d %d world", 1, 1, 1);
+
+    printf("hello \n %d %d world");
+    printf("hello \n %d %d world", 1);
+    printf("hello \n %d %d world", 1, 1);
+    printf("hello \n %d %d world", 1, 1, 1);
+
+    printf("hello \\n %d %d world");
+    printf("hello \\n %d %d world", 1);
+    printf("hello \\n %d %d world", 1, 1);
+    printf("hello \\n %d %d world", 1, 1, 1);
+
+    printf("hello \ \ %d %d world");
+    printf("hello \ \ %d %d world", 1);
+    printf("hello \ \ %d %d world", 1, 1);
+    printf("hello \ \ %d %d world", 1, 1, 1);
+
+    printf("hello \ % \ %d %d world");
+    printf("hello \ % \ %d %d world", 1);
+    printf("hello \ % \ %d %d world", 1, 1);
+    printf("hello \ % \ %d %d world", 1, 1, 1);
+
+    printf("hello %d %d world");
+    printf("hello %d %d world",
+        1);
+    printf("hello %d %d world",
+        1,
+        1);
+    printf("hello %d %d world",
+        1,
+        1,
+        1);
+
+    printf("hello % %d %d world");
+    printf("hello % %d %d world",
+        1);
+    printf("hello % %d %d world",
+        1,
+        1);
+    printf("hello % %d %d world",
+        1,
+        1,
+        1);
+
+    printf("hello % % %d %d world");
+    printf("hello % % %d %d world",
+        1);
+    printf("hello % % %d %d world",
+        1,
+        1);
+    printf("hello % % %d %d world",
+        1,
+        1,
+        1);
+
+    printf("hello \n %d %d world");
+    printf("hello \n %d %d world",
+        1);
+    printf("hello \n %d %d world",
+        1,
+        1);
+    printf("hello \n %d %d world",
+        1,
+        1,
+        1);
+
+    printf("hello \\n %d %d world");
+    printf("hello \\n %d %d world",
+        1);
+    printf("hello \\n %d %d world",
+        1,
+        1);
+    printf("hello \\n %d %d world",
+        1,
+        1,
+        1);
+
+    printf("hello \ \ %d %d world");
+    printf("hello \ \ %d %d world",
+        1);
+    printf("hello \ \ %d %d world",
+        1,
+        1);
+    printf("hello \ \ %d %d world",
+        1,
+        1,
+        1);
+
+    printf("hello \ % \ %d %d world");
+    printf("hello \ % \ %d %d world",
+        1);
+    printf("hello \ % \ %d %d world",
+        1,
+        1);
+    printf("hello \ % \ %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello %d %d world");
+    printf
+    ("hello %d %d world", 1);
+    printf
+    ("hello %d %d world", 1, 1);
+    printf
+    ("hello %d %d world", 1, 1, 1);
+
+    printf
+    ("hello % %d %d world");
+    printf
+    ("hello % %d %d world", 1);
+    printf
+    ("hello % %d %d world", 1, 1);
+    printf
+    ("hello % %d %d world", 1, 1, 1);
+
+    printf
+    ("hello % % %d %d world");
+    printf
+    ("hello % % %d %d world", 1);
+    printf
+    ("hello % % %d %d world", 1, 1);
+    printf
+    ("hello % % %d %d world", 1, 1, 1);
+
+    printf
+    ("hello \n %d %d world");
+    printf
+    ("hello \n %d %d world", 1);
+    printf
+    ("hello \n %d %d world", 1, 1);
+    printf
+    ("hello \n %d %d world", 1, 1, 1);
+
+    printf
+    ("hello \\n %d %d world");
+    printf
+    ("hello \\n %d %d world", 1);
+    printf
+    ("hello \\n %d %d world", 1, 1);
+    printf
+    ("hello \\n %d %d world", 1, 1, 1);
+
+    printf
+    ("hello \ \ %d %d world");
+    printf
+    ("hello \ \ %d %d world", 1);
+    printf
+    ("hello \ \ %d %d world", 1, 1);
+    printf
+    ("hello \ \ %d %d world", 1, 1, 1);
+
+    printf
+    ("hello \ % \ %d %d world");
+    printf
+    ("hello \ % \ %d %d world", 1);
+    printf
+    ("hello \ % \ %d %d world", 1, 1);
+    printf
+    ("hello \ % \ %d %d world", 1, 1, 1);
+
+    printf
+    ("hello %d %d world");
+    printf
+    ("hello %d %d world",
+        1);
+    printf
+    ("hello %d %d world",
+        1,
+        1);
+    printf
+    ("hello %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello % %d %d world");
+    printf
+    ("hello % %d %d world",
+        1);
+    printf
+    ("hello % %d %d world",
+        1,
+        1);
+    printf
+    ("hello % %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello % % %d %d world");
+    printf
+    ("hello % % %d %d world",
+        1);
+    printf
+    ("hello % % %d %d world",
+        1,
+        1);
+    printf
+    ("hello % % %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello \n %d %d world");
+    printf
+    ("hello \n %d %d world",
+        1);
+    printf
+    ("hello \n %d %d world",
+        1,
+        1);
+    printf
+    ("hello \n %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello \\n %d %d world");
+    printf
+    ("hello \\n %d %d world",
+        1);
+    printf
+    ("hello \\n %d %d world",
+        1,
+        1);
+    printf
+    ("hello \\n %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello \ \ %d %d world");
+    printf
+    ("hello \ \ %d %d world",
+        1);
+    printf
+    ("hello \ \ %d %d world",
+        1,
+        1);
+    printf
+    ("hello \ \ %d %d world",
+        1,
+        1,
+        1);
+
+    printf
+    ("hello \ % \ %d %d world");
+    printf
+    ("hello \ % \ %d %d world",
+        1);
+    printf
+    ("hello \ % \ %d %d world",
+        1,
+        1);
+    printf
+    ("hello \ % \ %d %d world",
+        1,
+        1,
+        1);
+
+    return 0;
+}

@@ -1,0 +1,535 @@
+const int a1 = 1;
+const int a1 = 2;
+const int a2 = 1, a2 = 2;
+
+const int b1 = 1;
+int b1;
+int b2;
+const int b2 = 1;
+
+int c1;
+int c1;
+int c2, c2;
+
+int e1;
+const int e2 = 1;
+
+const int a1_
+ = 1;
+const int a1_
+ = 2;
+const int a2_
+ = 1, a2_
+ = 2;
+
+const int b1_
+ = 1;
+int b1_
+;
+int b2_
+;
+const int b2_
+ = 1;
+
+int c1_
+;
+int c1_
+;
+int c2_
+, c2_
+;
+
+int e1_
+;
+const int e2_
+ = 1;
+
+void e1() {
+
+}
+
+void e2() {
+
+}
+
+void f1() {
+
+}
+
+int f1() {
+    return 0;
+}
+
+void f1() {
+
+}
+
+void f2(int a, int b) {
+    int a;
+    int b;
+}
+
+void f3(int a, int b) {
+    const int a = 0;
+    const int b = 0;
+}
+
+void f4(int a, int a) {
+
+}
+
+void f5(int a, int a, int a) {
+
+}
+
+void e1_
+() {
+
+}
+
+void e2_
+() {
+
+}
+
+void f1_
+() {
+
+}
+
+int f1_
+() {
+    return 0;
+}
+
+void f1_
+() {
+
+}
+
+void f2_
+(int a_
+, int b_
+) {
+    int a_
+    ;
+    int b_
+    ;
+}
+
+void f3_
+(int a_
+, int b_
+) {
+    const int a_
+     = 0;
+    const int b_
+     = 0;
+}
+
+void f4() {
+    const int a1 = 1;
+    int f1;
+    const int a1 = 2;
+    const int e2 = 0;
+    const int a2 = 1, a2 = 2;
+
+    const int b1 = 1;
+    int b1;
+    int b2;
+    const int b2 = 1;
+
+    int c1;
+    int c1;
+    int c2, c2;
+
+    {
+        const int a1 = 1;
+        int f1;
+        const int a1 = 2;
+        const int e2 = 0;
+        const int a2 = 1, a2 = 2;
+
+        const int b1 = 1;
+        int b1;
+        int b2;
+        const int b2 = 1;
+
+        int c1;
+        int c1;
+        int c2, c2;
+
+        {
+            const int a1 = 1;
+            int f1;
+            const int a1 = 2;
+            const int e2 = 0;
+            const int a2 = 1, a2 = 2;
+
+            const int b1 = 1;
+            int b1;
+            int b2;
+            const int b2 = 1;
+
+            int c1;
+            int c1;
+            int c2, c2;
+        }
+    }
+
+    if (1) {
+        const int a1 = 1;
+        int f1;
+        const int a1 = 2;
+        const int e2 = 0;
+        const int a2 = 1, a2 = 2;
+
+        const int b1 = 1;
+        int b1;
+        int b2;
+        const int b2 = 1;
+
+        int c1;
+        int c1;
+        int c2, c2;
+
+        {
+            const int a1 = 1;
+            int f1;
+            const int a1 = 2;
+            const int e2 = 0;
+            const int a2 = 1, a2 = 2;
+
+            const int b1 = 1;
+            int b1;
+            int b2;
+            const int b2 = 1;
+
+            int c1;
+            int c1;
+            int c2, c2;
+        }
+    }
+
+    if (1) {
+        const int a1 = 1;
+        int f1;
+        const int a1 = 2;
+        const int e2 = 0;
+        const int a2 = 1, a2 = 2;
+
+        const int b1 = 1;
+        int b1;
+        int b2;
+        const int b2 = 1;
+
+        int c1;
+        int c1;
+        int c2, c2;
+
+        {
+            const int a1 = 1;
+            int f1;
+            const int a1 = 2;
+            const int e2 = 0;
+            const int a2 = 1, a2 = 2;
+
+            const int b1 = 1;
+            int b1;
+            int b2;
+            const int b2 = 1;
+
+            int c1;
+            int c1;
+            int c2, c2;
+        }
+    }
+    else {
+        const int a1 = 1;
+        int f1;
+        const int a1 = 2;
+        const int e2 = 0;
+        const int a2 = 1, a2 = 2;
+
+        const int b1 = 1;
+        int b1;
+        int b2;
+        const int b2 = 1;
+
+        int c1;
+        int c1;
+        int c2, c2;
+
+        {
+            const int a1 = 1;
+            int f1;
+            const int a1 = 2;
+            const int e2 = 0;
+            const int a2 = 1, a2 = 2;
+
+            const int b1 = 1;
+            int b1;
+            int b2;
+            const int b2 = 1;
+
+            int c1;
+            int c1;
+            int c2, c2;
+        }
+    }
+
+    while (1) {
+        const int a1 = 1;
+        int f1;
+        const int a1 = 2;
+        const int e2 = 0;
+        const int a2 = 1, a2 = 2;
+
+        const int b1 = 1;
+        int b1;
+        int b2;
+        const int b2 = 1;
+
+        int c1;
+        int c1;
+        int c2, c2;
+
+        {
+            const int a1 = 1;
+            int f1;
+            const int a1 = 2;
+            const int e2 = 0;
+            const int a2 = 1, a2 = 2;
+
+            const int b1 = 1;
+            int b1;
+            int b2;
+            const int b2 = 1;
+
+            int c1;
+            int c1;
+            int c2, c2;
+        }
+    }
+}
+
+void f4(int a, int b) {{
+    int a;
+    int b;
+
+    f4();
+    f4()
+    ;
+    f4
+    ();
+
+    f5();
+    f5()
+    ;
+    f5
+    ();
+}}
+
+void f5(int a, int b) {{
+    const int a = 0;
+    const int b = 0;
+
+    f4();
+    f4()
+    ;
+    f4
+    ();
+
+    f5();
+    f5()
+    ;
+    f5
+    ();
+}}
+
+void f6() {
+    int f6;
+}
+
+int g() {}
+
+int gg() {
+
+}
+
+int ggg() {
+
+}
+
+int _g() {
+    {
+        return 0;
+    }
+}
+
+int _gg() {
+    if (0) {
+        return 0;
+    }
+}
+
+int _ggg() {
+    while (0) {
+        return 0;
+    }
+}
+
+int __g() {
+    if (0);
+}
+
+int __gg() {
+    if (0);
+    else ;
+}
+
+int __ggg() {
+    while (0);
+}
+
+void h() {
+    return 1;
+}
+
+void hh() {
+    if (0) return 1;
+}
+
+void hhh() {
+    if (0) return 1;
+    else return 1;
+}
+
+void hhhh() {
+    while (0) return 0;
+}
+
+void hhhhh() {
+    {
+        return 0;
+    }
+}
+
+void _h() {
+
+
+    return 1;
+
+
+}
+
+void _hh() {
+
+
+    if (0) return 1;
+
+
+}
+
+void _hhh() {
+
+
+    if (0) return 1;
+
+
+    else return 1;
+
+
+}
+
+void _hhhh() {
+
+
+    while (0) return 0;
+
+
+}
+
+void _hhhhh() {
+
+
+    {
+        return 0;
+    }
+
+
+}
+
+void i() {
+    return 1;
+    if (0) return 1;
+    if (0) return 1;
+    else return 1;
+    while (0) return 0;
+    {
+        return 0;
+    }
+
+    return;
+    if (0) return;
+    if (0) return;
+    else return;
+    while (0) return;
+    {
+        return;
+    }
+
+    return 1;
+    if (0) return 1;
+    if (0) return 1;
+    else return 1;
+    while (0) return 0;
+    {
+        return 0;
+    }
+}
+
+int main() {
+
+    _a1 = 0;
+    _a2[0] = 0;
+    _a3;
+    _a4[0];
+
+    int x[10];
+    x[_b0] = 0;
+    x[_b1[0]] = 0;
+    x[_b0 + 1] = 0;
+    x[_b1[0] + 1] = 0;
+
+    _f1(a, b, c);
+    _f2(a, b, c);
+
+    f4();
+    f5();
+
+    _a1
+     = 0;
+    _a2
+    [0] = 0;
+    _a3
+    ;
+    _a4
+    [0];
+
+    x[_b0
+    ] = 0;
+    x[_b1
+    [0]] = 0;
+    x[_b0
+     + 1] = 0;
+    x[_b1
+    [0] + 1] = 0;
+
+    _f1
+    (a, b, c);
+    _f2
+    (a, b, c);
+
+    return 0;
+}
